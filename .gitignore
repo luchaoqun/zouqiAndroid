@@ -1,8 +1,7 @@
+.settings/
+.idea
+gen/
+bin/
+.idea/.iml
+.idea/vcs.xml
 
-*.dex
-
-bin/classes.dex
-
-bin/resources.ap_
-
-bin/Zouqi.apk
