@@ -1,0 +1,8 @@
+
+*.dex
+
+bin/classes.dex
+
+bin/resources.ap_
+
+bin/Zouqi.apk
