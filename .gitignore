@@ -1,0 +1,6 @@
+.settings
+.idea
+gen/
+bin/
+.idea/.iml
+.idea/vcs.xml

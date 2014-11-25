@@ -8,9 +8,37 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.zouqi.W_login" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/W_log_editname"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="74dp"
+        android:hint ="@string/loadtishi1"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/W_log_editpasswd"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/W_log_editname"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+         android:hint ="@string/loadtishi2"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/W_log_load"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/W_log_editpasswd"
+        android:layout_below="@+id/W_log_editpasswd"
+        android:layout_marginTop="48dp"
+        android:text="@string/load" />
 
 </RelativeLayout>
