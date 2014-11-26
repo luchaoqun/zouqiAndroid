@@ -33,13 +33,13 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class Z_NetWork extends Thread{
-static final String URLPrefix="http://192.168.1.11:3000";
+static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 	private String TheUrl=null;
 	private String TheHttpMethod=null;
 	private String ThePostData=null;
 	private String JData=null;
-	public JSONObject JObj=null;
-	public JSONArray JArr=null;
+	private JSONObject JObj=null;
+	private JSONArray JArr=null;
 	
 
 	public void PreparePost(String RequestPath,String HttpMethod,String PostData){
