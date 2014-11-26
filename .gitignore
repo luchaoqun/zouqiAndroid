@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 .settings
+=======
+.settings/
+>>>>>>> 26ac30ff59ffa1b8b71c11b1ce77396b8961d448
 .idea
 gen/
 bin/
 .idea/.iml
 .idea/vcs.xml
+<<<<<<< HEAD
+=======
+
+>>>>>>> 26ac30ff59ffa1b8b71c11b1ce77396b8961d448

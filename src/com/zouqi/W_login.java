@@ -1,5 +1,8 @@
 package com.zouqi;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +24,19 @@ public class W_login extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				 Intent intent = new Intent();
-	               intent.setClass(W_login.this,W_personal.class);
-	               startActivity(intent);
+				 //Intent intent = new Intent();
+	              // intent.setClass(W_login.this,W_personal.class);
+	               //startActivity(intent);
+				Z_NetWork a=new Z_NetWork();
+				try {
+					a.ConnectX("http://10.0.32.187:3000", "POST", "ASDASDASD");
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}
