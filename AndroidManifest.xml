@@ -24,7 +24,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+       
         <activity
+            android:name=".W_register"
+            android:label="@string/title_activity_w_register" >
+        </activity>
+        <activity
+            android:name=".W_login"
+            android:label="@string/title_activity_w_personal" >
+             </activity>
+ 		<activity
             android:name=".L_hot"
             android:label="@string/title_activity_l_hot" >
         </activity>

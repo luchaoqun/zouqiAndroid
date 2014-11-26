@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/W_per_linearlayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/W_per_iamgeuser"
+            android:layout_width="wrap_content"
+            android:layout_height="62dp"
+            android:src="@drawable/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal" >
+ 
+              <TextView
+                  android:id="@+id/W_per_username"
+                  android:layout_width="60dp"
+                  android:layout_height="wrap_content"
+                  android:text="wyh" />
+
+              <TextView
+                  android:id="@+id/W_per_textzanshu"
+                  android:layout_width="40dp"
+                  android:layout_height="wrap_content"
+                  android:text="123" />
+
+              <ImageView
+                  android:id="@+id/W_per_imagezan"
+                  android:layout_width="30dp"
+                  android:layout_height="match_parent"
+                  android:src="@drawable/zan" />
+
+              <TextView
+                  android:id="@+id/W_per_textcaishu"
+                  android:layout_width="40dp"
+                  android:layout_height="wrap_content"
+                  android:layout_alignTop="@+id/W_per_linearlayout1"
+                  android:layout_toRightOf="@+id/W_per_linearlayout1"
+                  android:text="56" />
+
+                  <ImageView
+                  android:id="@+id/W_per_imagecai"
+                  android:layout_width="wrap_content"
+                  android:layout_height="26dp"
+                  android:src="@drawable/ic_launcher" />
+            
+          </LinearLayout>
+
+          <TextView
+              android:id="@+id/W_per_geqian"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:text=""
+               android:hint ="请编辑个性签名" />
+ 
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

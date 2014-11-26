@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/W_listv_userimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/snowpng" />
+
+    <TextView
+        android:id="@+id/W_listv_activityname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:layout_toRightOf="@+id/W_listv_userimage"
+        android:text="老司机俱乐部"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:id="@+id/W_listv_loactionimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/W_listv_userimage"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/locate" />
+
+    <ImageView
+        android:id="@+id/W_listv_timeimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/W_listv_timetext"
+        android:layout_alignRight="@+id/W_listv_loactionimage"
+        android:src="@drawable/time" />
+
+    <TextView
+        android:id="@+id/W_listv_loactiontext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/W_listv_loactionimage"
+        android:layout_alignLeft="@+id/W_listv_timetext"
+        android:text="鹏远3#5005" />
+
+    <TextView
+        android:id="@+id/W_listv_timetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/W_listv_activityname"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/W_listv_timeimage"
+        android:text="2012/12/5"
+        android:textSize="20dp" />
+
+</RelativeLayout>

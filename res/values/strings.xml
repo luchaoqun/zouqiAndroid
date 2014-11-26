@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <string name="app_name">走起</string>
+    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="load">登录</string>
+    <string name="email">电子邮件</string>
+    <string name="password">密码</string>
+    <string name="comfirm">确认密码</string>
+    <string name="jiaowuzhanghao">教务账号</string>
+    <string name="jiaowupassword">教务密码</string>
+    <string name="loadtishi1">请输入注册时的电子邮箱</string>
+    <string name="loadtishi2">请输入密码</string>
+    <string name="title_activity_camera">Camera</string>
+    <string name="title_activity_postget">Postget</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_personal">Personal</string>
+    <string name="title_activity_w_login">W_login</string>
+    <string name="title_activity_w_register">W_register</string>
+    <string name="title_activity_w_personal">W_personal</string>
     <string name="title_activity_l_hot">L_hot</string>
     <string name="title_activity_l_tab_hot">热门活动</string>
     <string name="title_activity_l_tab_home">我的活动</string>
