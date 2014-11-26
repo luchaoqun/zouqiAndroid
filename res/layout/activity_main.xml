@@ -1,11 +1,68 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="UTF-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.zouqi.MainActivity" >
+    android:layout_height="match_parent" >
 
-</RelativeLayout>
+		
+	    <LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+	        android:background="#FFFFFF"
+	        android:orientation="vertical" >
+	
+	        <FrameLayout
+	            android:id="@android:id/tabcontent"
+	            android:layout_width="fill_parent"
+	            android:layout_height="0.0dip"
+	            android:layout_weight="1.0" />
+	
+	        <TabWidget
+	            android:id="@android:id/tabs"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0.0"
+	            android:visibility="gone" />
+	
+	            <RadioGroup
+	                android:id="@+id/main_tab_radio"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="bottom"
+	                android:background="#FFFFFF"
+	                android:gravity="bottom"
+	                android:orientation="horizontal"
+	                 >
+	
+	                <RadioButton
+	                    android:id="@+id/main_tab_hot"
+	                    style="@style/LTabButton"
+	                    android:layout_weight="1.0"    
+	                    android:drawableTop="@drawable/hot"
+	                    android:text="热门活动" />
+	
+	                <RadioButton
+	                    android:id="@+id/main_tab_home"
+	                    style="@style/LTabButton"
+	                    android:layout_weight="1.0"
+	                    android:checked="true"
+	                    android:drawableTop="@drawable/home"
+	                    android:text="我的活动" />
+	
+	                <RadioButton
+	                    android:id="@+id/main_tab_group"
+	                    style="@style/LTabButton"
+	                    android:layout_weight="1.0"
+	                    android:drawableTop="@drawable/group"
+	                    android:text="我的群组" />
+	
+	                <RadioButton
+	                    android:id="@+id/main_tab_person"
+	                    style="@style/LTabButton"
+	                    android:layout_weight="1.0"  
+	                    android:drawableTop="@drawable/person"
+	                    android:text="个人信息" />
+	            </RadioGroup>
+	    </LinearLayout>
+
+</TabHost>
