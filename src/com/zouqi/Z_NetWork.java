@@ -1,3 +1,22 @@
+/**********************************************************************************
+* 使用方法：实例化类后，GET调用PrepareGet方法，POST/CURD使用PrepagePost方法初始化，最后执行start即可
+* example:
+*	Post:
+*		Z_network a=new Z_network();
+*		a.PreparePost("/users/sign_in", "POST", "{\"user\":{\"email\": \"q@q.q\",\"password\": \"11111111\"}}");
+*		a.start();
+*		
+*	Get:
+*		Z_network a=new Z_network();
+*		a.PrepareGet("/activities");
+*		a.start();
+*
+*
+*获取JSONObject:JSONObject obj=a.GetJsonObject();
+*获取JSONArray:JSONArray obj=a.GetJsonArray();
+************************************************************************************/
+
+
 package com.zouqi;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -5,35 +24,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import android.util.Log;
 
 public class Z_NetWork extends Thread{
+static final String URLPrefix="http://192.168.1.11:3000";
+	private String TheUrl=null;
+	private String TheHttpMethod=null;
+	private String ThePostData=null;
+	private String JData=null;
+	public JSONObject JObj=null;
+	public JSONArray JArr=null;
+	
 
-/*使用方法：实例化类后，GET调用PrepareGet方法，POST/CURD使用PrepagePost方法初始化，最后执行start即可
-eg:
-	Post:
-		Z_network a=new Z_network();
-		a.PreparePost("http://192.168.1.11:3000/users/sign_in", "POST", "{\"user\":{\"email\": \"q@q.q\",\"password\": \"11111111\"}}");
-		a.start();
-		
-	Get:
-		Z_network a=new Z_network();
-		a.PrepareGet("http://www.baidu.com");
-		a.start();
-*/
-	String TheUrl,TheHttpMethod,ThePostData;
-	public void PreparePost(String NewUrl,String HttpMethod,String PostData){
-		TheUrl=NewUrl;
+	public void PreparePost(String RequestPath,String HttpMethod,String PostData){
+		TheUrl=URLPrefix+RequestPath;
 		TheHttpMethod=HttpMethod;
 		ThePostData=PostData;
 		
 	}
 	
-	public void PrepareGet(String NewUrl){
-		TheUrl=NewUrl;
+	public void PrepareGet(String RequestPath){
+		TheUrl=URLPrefix+RequestPath;
 		TheHttpMethod="GET";
 	}
 	
@@ -68,7 +85,8 @@ eg:
 		}
 		InputData.close();
 		httpconn.disconnect();
-		Log.d("NetReceived",response.toString());
+		JData=response.toString();
+		Log.d("NetReceived",JData);
 	}
 	
 	public void run() {
@@ -83,6 +101,24 @@ eg:
 		}
 	}
 
-
+	public JSONObject GetJsonObject(){
+		try {
+			JObj = new JSONObject(JData);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return JObj;
+	}
+	
+	public JSONArray GetJsonArray(){
+		try {
+			JArr=new JSONArray(JData);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return JArr;
+	}
 	
 }
