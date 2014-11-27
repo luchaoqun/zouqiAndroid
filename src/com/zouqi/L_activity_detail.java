@@ -1,40 +1,22 @@
 package com.zouqi;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
-public class W_login extends Activity {
+public class L_activity_detail extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_w_login);
-		Button btn=(Button) findViewById(R.id.W_log_load);
-		btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				 //Intent intent = new Intent();
-	              // intent.setClass(W_login.this,W_personal.class);
-	               //startActivity(intent);
-
-			}
-		});
+		setContentView(R.layout.activity_l_detail);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.w_login, menu);
+		getMenuInflater().inflate(R.menu.l_activity_detail, menu);
 		return true;
 	}
 
