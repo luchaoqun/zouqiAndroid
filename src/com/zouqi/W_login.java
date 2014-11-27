@@ -29,11 +29,8 @@ public class W_login extends Activity {
 	               //startActivity(intent);
 				Z_NetWork a=new Z_NetWork();
 				try {
-					a.ConnectX("http://10.0.32.187:3000", "POST", "ASDASDASD");
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
+					a.PreparePost("http://10.0.32.187:3000", "POST", "ASDASDASD");
+				}catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

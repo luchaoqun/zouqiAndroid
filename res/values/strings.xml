@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <string name="app_name">走起</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -26,5 +25,6 @@
     <string name="title_activity_l_tab_home">我的活动</string>
     <string name="title_activity_l_tab_group">我的群组</string>
     <string name="title_activity_l_tab_person">个人信息</string>
+    <string name="title_activity_l_activity_detail">活动详情</string>
 
 </resources>
