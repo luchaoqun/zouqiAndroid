@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#ffffff">
     <LinearLayout
         android:id="@+id/W_per_linearlayout1"
         android:layout_width="wrap_content"
@@ -13,8 +14,8 @@
 
         <ImageView
             android:id="@+id/W_per_iamgeuser"
-            android:layout_width="wrap_content"
-            android:layout_height="62dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_launcher" />
 
         <LinearLayout
@@ -33,6 +34,12 @@
                   android:layout_height="wrap_content"
                   android:text="wyh" />
 
+              <ImageView
+                  android:id="@+id/W_per_imagezan"
+                  android:layout_width="30dp"
+                  android:layout_height="30dp"
+                  android:src="@drawable/zan" />
+
               <TextView
                   android:id="@+id/W_per_textzanshu"
                   android:layout_width="40dp"
@@ -40,10 +47,10 @@
                   android:text="123" />
 
               <ImageView
-                  android:id="@+id/W_per_imagezan"
+                  android:id="@+id/W_per_imagecai"
                   android:layout_width="30dp"
-                  android:layout_height="match_parent"
-                  android:src="@drawable/zan" />
+                  android:layout_height="30dp"
+                  android:src="@drawable/ic_launcher" />
 
               <TextView
                   android:id="@+id/W_per_textcaishu"
@@ -52,12 +59,6 @@
                   android:layout_alignTop="@+id/W_per_linearlayout1"
                   android:layout_toRightOf="@+id/W_per_linearlayout1"
                   android:text="56" />
-
-                  <ImageView
-                  android:id="@+id/W_per_imagecai"
-                  android:layout_width="wrap_content"
-                  android:layout_height="26dp"
-                  android:src="@drawable/ic_launcher" />
             
           </LinearLayout>
 

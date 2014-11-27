@@ -1,5 +1,5 @@
 /**********************************************************************************
-* Ê¹ÓÃ·½·¨£ºÊµÀý»¯Ààºó£¬GETµ÷ÓÃPrepareGet·½·¨£¬POST/CURDÊ¹ÓÃPrepagePost·½·¨³õÊ¼»¯£¬×îºóÖ´ÐÐstart¼´¿É
+* Ê¹ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½GETï¿½ï¿½ï¿½ï¿½PrepareGetï¿½ï¿½ï¿½ï¿½ï¿½ï¿½POST/CURDÊ¹ï¿½ï¿½PrepagePostï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½startï¿½ï¿½ï¿½ï¿½
 * example:
 *	Post:
 *		Z_network a=new Z_network();
@@ -12,8 +12,8 @@
 *		a.start();
 *
 *
-*»ñÈ¡JSONObject:JSONObject obj=a.GetJsonObject();
-*»ñÈ¡JSONArray:JSONArray obj=a.GetJsonArray();
+*ï¿½ï¿½È¡JSONObject:JSONObject obj=a.GetJsonObject();
+*ï¿½ï¿½È¡JSONArray:JSONArray obj=a.GetJsonArray();
 ************************************************************************************/
 
 
@@ -28,7 +28,6 @@ import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import android.util.Log;
 

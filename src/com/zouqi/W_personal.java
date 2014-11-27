@@ -1,9 +1,12 @@
 package com.zouqi;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+
+
+import android.R.integer;
 import android.app.Activity;
+import android.app.LauncherActivity.ListItem;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,64 +29,31 @@ public class W_personal extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_w_personal);
-		ListView lv = (ListView) this.findViewById(R.id.listView1);
-        listAdapter = new myAdapter(this);
-        lv.setAdapter(listAdapter);
-	}
-	   // listString.add(Integer.toString());
-	/*	HashMap<String, Object> map = new HashMap<String, Object>();
-		 map.put("ItemImage", R.drawable.ic_launcher);
-		 map.put("name","wyh");
-		 map.put("zan", "123");
-		 map.put("iamgezan", R.drawable.ic_launcher);
-		 map.put("cai", "456");
-		 map.put("imagecai", R.drawable.ic_launcher);
-		 map.put("geqian","woshinibaba");
-		 listItem.add(map); 
-		 
-		 
-		 SimpleAdapter listItemAdapter = new SimpleAdapter(this,listItem,//数据源   
-		            R.layout.activity_w_listview_padding,//ListItem的XML实现  
-		            //动态数组与ImageItem对应的子项          
-		            new String[] {"userimage","message", "clock","clocktext","locate","locatetext"},   
-		            //ImageItem的XML文件里面的一个ImageView,两个TextView ID  
-		            new int[] {R.id.imageView1,R.id.textView1,R.id.imageView2,R.id.textView2,R.id.imageView3,R.id.textView3}  
-		        );  
-		   lv.setAdapter(listItemAdapter);  
-		   
-		   HashMap<String, Object> map1 = new HashMap<String, Object>();
-			map1.put("userimage", R.drawable.snowpng);
-			map1.put("message", "老司机俱乐部");
-			map1.put("clock", R.drawable.time);
-			map1.put("clocktext", "2012/12/5");
-			map1.put("locate", R.drawable.locate);
-			map1.put("locatetext", "鹏远3#5005");
-			 listItem.add(map1); 
-			 
-		 SimpleAdapter listItemAdapter1 = new SimpleAdapter(this,listItem,//数据源   
-		            R.layout.activity_w_listview_padding2,//ListItem的XML实现  
-		            //动态数组与ImageItem对应的子项          
-		            new String[] {"userimage","message", "zan","iamgezan","cai","imagecai","geqian"},   
-		            //ImageItem的XML文件里面的一个ImageView,两个TextView ID  
-		            new int[] {R.id.W_per_iamgeuser,R.id.W_per_username,R.id.W_per_textzanshu,R.id.W_per_imagezan,R.id.W_per_textcaishu,R.id.W_per_imagecai,R.id.W_per_geqian}  
-		        );  
-		
-		   lv.setAdapter(listItemAdapter1);*/
-		   
+		ListView lv=(ListView)findViewById(R.id.listView1);
+		listString = new ArrayList();
+		listString.add(Integer.toString(1));
+		listString.add(Integer.toString(2));
+		for(int i=0;i<10;i++)
+		{
+			listString.add(Integer.toString(i));
+		}
+	   listAdapter = new myAdapter(this);
+	   lv.setAdapter(listAdapter);
+	}	   
 		class myAdapter extends BaseAdapter{
 		Context mContext;
-		LinearLayout linearLayout = null;
 		LayoutInflater inflater;
 	    TextView tex;
 		final int VIEW_TYPE = 2;
 		final int TYPE_1 = 0;
 		final int TYPE_2 = 1;
-		
+		private ArrayList<Integer> TypeList = new ArrayList<Integer>();
 		public myAdapter(Context context){
 			                  mContext = context;
                               inflater = LayoutInflater.from(mContext);
 		}
-			@Override
+		
+			
 			public int getCount() {
 				// TODO Auto-generated method stub
 				return listString.size();
@@ -91,11 +61,13 @@ public class W_personal extends Activity {
 			@Override
 			public int getItemViewType(int position) {
 			// TODO Auto-generated method stub
-				int p = position%2;
-			if(p == 0)
-			return TYPE_1;
-			else
-			return TYPE_2; 
+				//int p = position%2;
+				int p = position;
+			    if(p == 0)
+			     return TYPE_1;
+			   else 
+                 return TYPE_2;
+		
 			}
 
 			@Override
@@ -120,8 +92,10 @@ public class W_personal extends Activity {
 				viewHolder1 holder1 = null;
 			    viewHolder2 holder2 = null;
 			    int type=getItemViewType(position);
-			    if(convertView==null){
-			    	Log.e("converview","NULL");
+			    Log.e("position", Integer.toString(position));
+		    /*if(convertView==null){
+			    	Log.e("converview","NULL");*/
+			        
 			    	switch(type)
 			    	{
 			    	case TYPE_1:
@@ -137,6 +111,7 @@ public class W_personal extends Activity {
 			    		convertView.setTag(holder1);
 			    		Log.e("holder1", "NULL "); 
 			    		break;
+			    		
 			    	case TYPE_2:
 			    	   convertView=inflater.inflate(R.layout.activity_w_listview_padding2, parent, false);
 			    	   holder2=new viewHolder2();
@@ -150,8 +125,8 @@ public class W_personal extends Activity {
 			    	   Log.e("holder2", "NULL "); 
 			    	   break;
 			    	}
-			    }
-			    else{
+			 //   }
+		   /*else{
 			    	switch(type)
 			    	{
 			    	case TYPE_1:
@@ -161,7 +136,8 @@ public class W_personal extends Activity {
 			    		holder2=(viewHolder2)convertView.getTag();
 			    		break;
 			    	}
-			    }
+			    }*/
+			    
 			    switch (type){
 			    case TYPE_1:
 			    	holder1.text1.setText("wyh");
@@ -182,27 +158,25 @@ public class W_personal extends Activity {
 			    }
 				return convertView;
 			}
-		
-			 class viewHolder1{
-				 ImageView  image1;
-				 ImageView  image2;
-				 ImageView  image3;
-				 TextView text1;
-				 TextView text2;
-				 TextView text3;
-				 TextView text4;
-			 }
-			 class viewHolder2{
-				 ImageView image1;
-				 ImageView image2;
-				 ImageView image3;
-				 TextView text1;
-				 TextView text2;
-				 TextView text3;
-			 }
       }
-
-
+		class viewHolder1{
+			 ImageView  image1;
+			 ImageView  image2;
+			 ImageView  image3;
+			 TextView text1;
+			 TextView text2;
+			 TextView text3;
+			 TextView text4;
+		 }
+		 class viewHolder2{
+			 ImageView image1;
+			 ImageView image2;
+			 ImageView image3;
+			 TextView text1;
+			 TextView text2;
+			 TextView text3;
+		 }
+    
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

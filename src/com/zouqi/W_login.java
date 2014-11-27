@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,11 +28,10 @@ public class W_login extends Activity {
 	               //startActivity(intent);
 				Z_NetWork a=new Z_NetWork();
 				try {
-					a.ConnectX("http://10.0.32.187:3000", "POST", "ASDASDASD");
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
+					//String s="{"email": "xiaodi33@test.com","password": "xiaodixiaodi"}"
+					a.PreparePost("/user.json", "POST", "{\"email\": \"xiaodi33@test.com\",\"password\": \"xiaodixiaodi\"}");//str是jaon字符串;
+					a.start();
+				}  catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
