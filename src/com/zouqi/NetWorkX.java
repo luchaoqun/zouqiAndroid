@@ -1,17 +1,7 @@
 /**********************************************************************************
 * Usage:
 * 	new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Result],[TheAdapter]).execute([Result_JsonType]);
-* 	
-*	Post:
-*		Z_network a=new Z_network();
-*		a.PreparePost("/users/sign_in", "POST", "{\"user\":{\"email\": \"q@q.q\",\"password\": \"11111111\"}}");
-*		a.start();
-*		
-*	Get:
-*		Z_network a=new Z_network();
-*		a.PrepareGet("/activities");
-*		a.start();
-*
+
 ************************************************************************************/
 
 
@@ -27,11 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
-
 
 
 public class NetWorkX extends AsyncTask<Object, Void, Object>{
