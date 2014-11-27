@@ -1,6 +1,7 @@
 /**********************************************************************************
-* 使用方法：实例化类后，GET调用PrepareGet方法，POST/CURD使用PrepagePost方法初始化，最后执行start即可
-* example:
+* Usage:
+* 	new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Result],[TheAdapter]).execute([Result_JsonType]);
+* 	
 *	Post:
 *		Z_network a=new Z_network();
 *		a.PreparePost("/users/sign_in", "POST", "{\"user\":{\"email\": \"q@q.q\",\"password\": \"11111111\"}}");
@@ -11,9 +12,6 @@
 *		a.PrepareGet("/activities");
 *		a.start();
 *
-*
-*获取JSONObject:JSONObject obj=a.GetJsonObject();
-*获取JSONArray:JSONArray obj=a.GetJsonArray();
 ************************************************************************************/
 
 
@@ -30,29 +28,45 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.BaseAdapter;
 
-public class Z_NetWork extends Thread{
-static final String URLPrefix="http://rdd7cn.xicp.net:3000";
+
+
+public class NetWorkX extends AsyncTask<Object, Void, Object>{
+	
+	public static enum JsonType{
+		JObject,Jarray,JString;
+	}
+	public static enum HTTPMethod{
+		GET,POST,DELETE,UPDATE;
+	}
+
+	static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 	private String TheUrl=null;
-	private String TheHttpMethod=null;
+	private HTTPMethod TheHttpMethod=null;
 	private String ThePostData=null;
 	private String JData=null;
-	private JSONObject JObj=null;
-	private JSONArray JArr=null;
+	private BaseAdapter TheAdapter=null;
+	//private JSONObject JObj=null;
+	//private JSONArray JArr=null;
+	//private InputStream RcvData=null;
+	private Object ResultData=null;
 	
-
-	public void PreparePost(String RequestPath,String HttpMethod,String PostData){
+	
+	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,Object JResult,BaseAdapter AimAdapter){
 		TheUrl=URLPrefix+RequestPath;
-		TheHttpMethod=HttpMethod;
+		TheHttpMethod=Method;
 		ThePostData=PostData;
-		
+		ResultData=JResult;
+		TheAdapter=AimAdapter;
 	}
-	
+	/*
 	public void PrepareGet(String RequestPath){
 		TheUrl=URLPrefix+RequestPath;
 		TheHttpMethod="GET";
-	}
+	}*/
 	
 	public void ConnectX() throws IOException, JSONException{
 	
@@ -60,10 +74,25 @@ static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 		Log.d("NetWork Debug Message","Url is "+TheUrl);
 		URL url=new URL(TheUrl);
 		HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
-		httpconn.setRequestMethod(TheHttpMethod);
+		String TmpMethod=null;
+		switch (TheHttpMethod){
+			case GET:
+				TmpMethod="GET";
+				break;
+			case POST:
+				TmpMethod="POST";
+				break;
+			case DELETE:
+				TmpMethod="DELETE";
+				break;
+			case UPDATE:
+				TmpMethod="UPDATE";
+				break;
+		}
+		httpconn.setRequestMethod(TmpMethod);
 		httpconn.setRequestProperty("Accept", "application/json");
 		httpconn.setRequestProperty("Content-Type","application/json");
-		if(TheHttpMethod.equals("POST"))
+		if(TheHttpMethod==HTTPMethod.POST||TheHttpMethod==HTTPMethod.DELETE||TheHttpMethod==HTTPMethod.UPDATE)
 		{
 			httpconn.setDoOutput(true);
 			httpconn.setUseCaches(false);
@@ -71,13 +100,13 @@ static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 		httpconn.setDoInput(true);
 		httpconn.setInstanceFollowRedirects(true);
 		httpconn.connect();
-		if(TheHttpMethod.equals("POST")){
+		if(TheHttpMethod==HTTPMethod.POST||TheHttpMethod==HTTPMethod.DELETE||TheHttpMethod==HTTPMethod.UPDATE){
 			DataOutputStream PostData_Stream=new DataOutputStream(httpconn.getOutputStream());
 			PostData_Stream.writeBytes(ThePostData);
 			PostData_Stream.flush();
 			PostData_Stream.close();
 		}
-		
+		//RcvData=httpconn.getInputStream();
 		BufferedReader InputData=new BufferedReader(new InputStreamReader(httpconn.getInputStream()),8192);
 		String TmpData=null;
 		while((TmpData=InputData.readLine())!=null){
@@ -89,18 +118,7 @@ static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 		Log.d("NetReceived",JData);
 	}
 	
-	public void run() {
-		try {
-			this.ConnectX();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
+/*
 	public JSONObject GetJsonObject(){
 		try {
 			JObj = new JSONObject(JData);
@@ -119,6 +137,54 @@ static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 			e.printStackTrace();
 		}
 		return JArr;
+	}
+	
+	
+*/
+	@Override
+	protected Object doInBackground(Object... params) {
+		try {
+			this.ConnectX();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JsonType JType=(JsonType) params[0];
+		if(JType==JsonType.JObject){
+			try {
+				ResultData=new JSONObject(JData);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(JType==JsonType.Jarray){//Json Array
+			try {
+				ResultData=new JSONArray(JData);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else{
+			ResultData=null;
+		}
+		return ResultData;
+	}
+	
+	@Override
+	protected void onPostExecute(Object result){
+		if(result!=null){
+			Log.d("NetWorkX","Receive Json Data OK,Result is"+result.toString());
+			TheAdapter.notifyDataSetChanged();
+			}
+		else
+		{
+			Log.e("NetWorkX","Receive Blank Data!May be Error!!");
+		}
 	}
 	
 }
