@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,9 +24,9 @@ public class W_login extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				 //Intent intent = new Intent();
-	              // intent.setClass(W_login.this,W_personal.class);
-	               //startActivity(intent);
+				 Intent intent = new Intent();
+	              intent.setClass(W_login.this,MainActivity.class);//此处改动
+	              startActivity(intent);
 
 			}
 		});
