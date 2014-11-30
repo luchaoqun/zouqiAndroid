@@ -1,6 +1,12 @@
 package com.zouqi;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONObject;
+
+import com.zouqi.NetWorkX.HTTPMethod;
+import com.zouqi.NetWorkX.JsonType;
 
 
 
@@ -25,6 +31,15 @@ public class W_personal extends Activity {
 	      
 	   ArrayList listString;
 	   myAdapter listAdapter;
+	   JSONObject TestJson;
+	   public Runnable DataChanged=new Runnable(){
+		   public void run(){
+			   Log.d("W_person_By_R7","Run the Datachanged");
+			   Log.d("W_person_By_R7","Result is "+TestJson.toString());
+			   listAdapter.notifyDataSetChanged();
+		   }
+	   };
+	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +54,15 @@ public class W_personal extends Activity {
 		}
 	   listAdapter = new myAdapter(this);
 	   lv.setAdapter(listAdapter);
+	   try {
+		TestJson=(JSONObject) new NetWorkX("/users/sign_in",HTTPMethod.POST,"{\"user\":{\"email\": \"q@q.q\",\"password\": \"11111111\"}}",DataChanged).execute(JsonType.JObject).get();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (ExecutionException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}	   
 		class myAdapter extends BaseAdapter{
 		Context mContext;
