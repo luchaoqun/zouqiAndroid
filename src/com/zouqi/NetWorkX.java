@@ -1,11 +1,11 @@
 /**********************************************************************************
 * Usage:
-* 	[JSONObject/JSONArray/String] eg_varible=new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[TheAdapter]).execute([Result_JsonType]);
+* 	[JSONObject/JSONArray/String] eg_varible=new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Runnable]).execute([Result_JsonType]);
 *	
 *	ReuqsetPath:(String Type)  Like "/user.sign" ,"/activities.json",etc...
 *	PostMethod:(HttpMethod Type)  HttpMethod.GET,HttpMethod.POST,HttpMethod.UPDATE,HttpMethod.DELETE.
 *	PostContent:(String Type) The POST Content write here.If you GET,give this parameter (null).
-*	TheAdapter:(BaseAdapter Type) The Adapter your ListView or others used.
+*	Runnable:(Runnable Type) When the process has done,the next Runnable Function.
 *	Result_JsonType:(JsonType Type) JsonType.JObject,JsonType.JArray,JsonType.JString
 ************************************************************************************/
 
@@ -24,7 +24,6 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.BaseAdapter;
 
 
 public class NetWorkX extends AsyncTask<Object, Void, Object>{
@@ -41,16 +40,15 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	private HTTPMethod TheHttpMethod=null;
 	private String ThePostData=null;
 	private String JData=null;
-	private BaseAdapter TheAdapter=null;
 	private Object ResultData=null;
+	private Runnable NextFunction=null;
 	
-	
-	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,BaseAdapter AimAdapter){
+	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,Runnable OnSuccess){
 		TheUrl=URLPrefix+RequestPath;
 		TheHttpMethod=Method;
 		ThePostData=PostData;
 		ResultData=new Object();
-		TheAdapter=AimAdapter;
+		NextFunction=OnSuccess;
 	}
 	
 	public void ConnectX() throws IOException, JSONException{
@@ -91,7 +89,6 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 			PostData_Stream.flush();
 			PostData_Stream.close();
 		}
-		//RcvData=httpconn.getInputStream();
 		BufferedReader InputData=new BufferedReader(new InputStreamReader(httpconn.getInputStream()),8192);
 		String TmpData=null;
 		while((TmpData=InputData.readLine())!=null){
@@ -140,7 +137,8 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	@Override
 	protected void onPostExecute(Object result){
 		if(result!=null){
-			TheAdapter.notifyDataSetChanged();
+			NextFunction.run();
+			//TheAdapter.notifyDataSetChanged();
 		}
 		else
 		{
