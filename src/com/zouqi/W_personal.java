@@ -28,17 +28,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class W_personal extends Activity {
-	      
 	   ArrayList listString;
 	   myAdapter listAdapter;
-	   JSONObject TestJson;
+	  /* JSONObject TestJson;
 	   public Runnable DataChanged=new Runnable(){
 		   public void run(){
 			   Log.d("W_person_By_R7","Run the Datachanged");
 			   Log.d("W_person_By_R7","Result is "+TestJson.toString());
 			   listAdapter.notifyDataSetChanged();
 		   }
-	   };
+	   };*/
 	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +53,14 @@ public class W_personal extends Activity {
 		}
 	   listAdapter = new myAdapter(this);
 	   lv.setAdapter(listAdapter);
-	   try {
-		TestJson=(JSONObject) new NetWorkX("/users/sign_in",HTTPMethod.POST,"{\"user\":{\"email\": \"q@q.q\",\"password\": \"11111111\"}}",DataChanged).execute(JsonType.JObject).get();
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (ExecutionException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
 	}	   
 		class myAdapter extends BaseAdapter{
 		Context mContext;
 		LayoutInflater inflater;
-	    TextView tex;
 		final int VIEW_TYPE = 2;
 		final int TYPE_1 = 0;
 		final int TYPE_2 = 1;
+		final int TYPE_3 = 2;
 		private ArrayList<Integer> TypeList = new ArrayList<Integer>();
 		public myAdapter(Context context){
 			                  mContext = context;
@@ -89,12 +79,14 @@ public class W_personal extends Activity {
 				int p = position;
 			    if(p == 0)
 			     return TYPE_1;
-			   else 
+			   else if(listString.size()-position>=4)//position从零开始
                  return TYPE_2;
+			   else 
+				  return TYPE_3;
 		
 			}
 
-			@Override
+			//@Override
 
 			public int getViewTypeCount() {
 			// TODO Auto-generated method stub
@@ -117,9 +109,9 @@ public class W_personal extends Activity {
 			    viewHolder2 holder2 = null;
 			    int type=getItemViewType(position);
 			    Log.e("position", Integer.toString(position));
-		    /*if(convertView==null){
-			    	Log.e("converview","NULL");*/
-			        
+		 /*   if(convertView==null){
+			    	Log.e("converview","NULL");
+			        */
 			    	switch(type)
 			    	{
 			    	case TYPE_1:
@@ -148,9 +140,11 @@ public class W_personal extends Activity {
 			    	   convertView.setTag(holder2);
 			    	   Log.e("holder2", "NULL "); 
 			    	   break;
+			    	case TYPE_3:
+			    		convertView=inflater.inflate(R.layout.activity_w_listview_padding3, parent,false);
 			    	}
-			 //   }
-		   /*else{
+			//   }
+		/*   else{
 			    	switch(type)
 			    	{
 			    	case TYPE_1:
@@ -179,6 +173,7 @@ public class W_personal extends Activity {
 			    	holder2.image1.setBackgroundResource(R.drawable.snowpng);
 			    	holder2.image2.setBackgroundResource(R.drawable.time);
 			    	holder2.image3.setBackgroundResource(R.drawable.locate);
+			    	break;
 			    }
 				return convertView;
 			}
