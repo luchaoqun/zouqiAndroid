@@ -5,26 +5,19 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/W_buildactivitylocation"
+        android:id="@+id/W_buildactivity_maxpeople"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="活动地点"
+        android:text="最大人数"
         android:textSize="15dp" />
 
     <EditText
-        android:id="@+id/W_buildactivityeditlocation"
-        android:layout_width="160dp"
+        android:id="@+id/W_buildactivity_editmaxpeople"
+        android:layout_width="116dp"
         android:layout_height="wrap_content"
         android:ems="10" >
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/W_choseloaction"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:text="选取位置" 
-        android:textSize="15dp"/>
 
 </LinearLayout>

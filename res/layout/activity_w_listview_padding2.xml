@@ -32,7 +32,7 @@
         android:layout_alignBottom="@+id/W_listv_loactionimage"
         android:layout_alignLeft="@+id/W_listv_timetext"
         android:text="鹏远3#5005"
-        android:textSize="20dp" />
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/W_listv_timetext"
@@ -43,20 +43,20 @@
         android:layout_marginTop="16dp"
         android:layout_toRightOf="@+id/W_listv_timeimage"
         android:text="2012/12/5"
-        android:textSize="20dp" />
+        android:textSize="15dp" />
 
     <ImageView
         android:id="@+id/W_listv_timeimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_alignBottom="@+id/W_listv_timetext"
         android:layout_alignLeft="@+id/W_listv_activityname"
         android:src="@drawable/time" />
 
     <ImageView
         android:id="@+id/W_listv_loactionimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_alignBottom="@+id/W_listv_userimage"
         android:layout_toLeftOf="@+id/W_listv_timetext"
         android:src="@drawable/locate" />
