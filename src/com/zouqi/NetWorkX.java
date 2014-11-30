@@ -1,7 +1,12 @@
 /**********************************************************************************
 * Usage:
-* 	new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Result],[TheAdapter]).execute([Result_JsonType]);
-
+* 	[JSONObject/JSONArray/String] eg_varible=new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[TheAdapter]).execute([Result_JsonType]);
+*	
+*	ReuqsetPath:(String Type)  Like "/user.sign" ,"/activities.json",etc...
+*	PostMethod:(HttpMethod Type)  HttpMethod.GET,HttpMethod.POST,HttpMethod.UPDATE,HttpMethod.DELETE.
+*	PostContent:(String Type) The POST Content write here.If you GET,give this parameter (null).
+*	TheAdapter:(BaseAdapter Type) The Adapter your ListView or others used.
+*	Result_JsonType:(JsonType Type) JsonType.JObject,JsonType.JArray,JsonType.JString
 ************************************************************************************/
 
 
@@ -25,7 +30,7 @@ import android.widget.BaseAdapter;
 public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	
 	public static enum JsonType{
-		JObject,Jarray,JString;
+		JObject,JArray,JString;
 	}
 	public static enum HTTPMethod{
 		GET,POST,DELETE,UPDATE;
@@ -37,24 +42,16 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	private String ThePostData=null;
 	private String JData=null;
 	private BaseAdapter TheAdapter=null;
-	//private JSONObject JObj=null;
-	//private JSONArray JArr=null;
-	//private InputStream RcvData=null;
 	private Object ResultData=null;
 	
 	
-	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,Object JResult,BaseAdapter AimAdapter){
+	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,BaseAdapter AimAdapter){
 		TheUrl=URLPrefix+RequestPath;
 		TheHttpMethod=Method;
 		ThePostData=PostData;
-		ResultData=JResult;
+		ResultData=new Object();
 		TheAdapter=AimAdapter;
 	}
-	/*
-	public void PrepareGet(String RequestPath){
-		TheUrl=URLPrefix+RequestPath;
-		TheHttpMethod="GET";
-	}*/
 	
 	public void ConnectX() throws IOException, JSONException{
 	
@@ -103,41 +100,17 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 		InputData.close();
 		httpconn.disconnect();
 		JData=response.toString();
-		Log.d("NetReceived",JData);
 	}
 	
-/*
-	public JSONObject GetJsonObject(){
-		try {
-			JObj = new JSONObject(JData);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return JObj;
-	}
-	
-	public JSONArray GetJsonArray(){
-		try {
-			JArr=new JSONArray(JData);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return JArr;
-	}
-	
-	
-*/
 	@Override
 	protected Object doInBackground(Object... params) {
 		try {
 			this.ConnectX();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Log.e("NetWorkX-ConnectX","IOException");
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			Log.e("NetWorkX-ConnectX","JSONException");
 			e.printStackTrace();
 		}
 		JsonType JType=(JsonType) params[0];
@@ -145,30 +118,30 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 			try {
 				ResultData=new JSONObject(JData);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				Log.e("NetWorkX-doInbackGround","JSONException");
 				e.printStackTrace();
 			}
 		}
-		else if(JType==JsonType.Jarray){//Json Array
+		else if(JType==JsonType.JArray){
 			try {
 				ResultData=new JSONArray(JData);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				Log.e("NetWorkX-doInbackGround","JSONException");
 				e.printStackTrace();
 			}
 		}
 		else{
 			ResultData=null;
 		}
+		Log.d("NetWorkX","Receive Json Data OK,Result is"+ResultData.toString());
 		return ResultData;
 	}
 	
 	@Override
 	protected void onPostExecute(Object result){
 		if(result!=null){
-			Log.d("NetWorkX","Receive Json Data OK,Result is"+result.toString());
 			TheAdapter.notifyDataSetChanged();
-			}
+		}
 		else
 		{
 			Log.e("NetWorkX","Receive Blank Data!May be Error!!");
