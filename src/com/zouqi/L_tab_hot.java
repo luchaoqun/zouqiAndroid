@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.zouqi.NetWorkX.HTTPMethod;
+import com.zouqi.NetWorkX.JsonType;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,11 +28,44 @@ public class L_tab_hot extends Activity {
 	private String[] descs = new String[]{"Zhouriqi is a big SB","Zhouriqi is a big SB","Zhouriqi is a big SB","Zhouriqi is a big SB","周瑞琦是个大逗比"};
 	private int[] imageIds = new int[]
 			{R.drawable.snowpng,R.drawable.snowpng,R.drawable.snowpng,R.drawable.snowpng,R.drawable.snowpng};
+	JSONArray testjson=null;
+	JSONObject activity0=null;
+	String token="sdNr-dpcpsqSczLKMz1r" ;
+	Runnable DataChanged=new Runnable(){
+
+		@Override
+		public void run() {
+			System.out.println("success");
+			
+			try {
+				activity0 = testjson.getJSONObject(0);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_l_tab_hot);
+		
+		
+		try {
+			testjson = (JSONArray) new NetWorkX("/activities.json?user_token="+token,HTTPMethod.GET, null, DataChanged).execute(JsonType.JArray).get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			names[0] = activity0.getString("activity_title");
+			//imageIds[0] = activity0.getString("activity_logo");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
 		List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
 		for(int i = 0;i < names.length;i++)
@@ -35,7 +76,6 @@ public class L_tab_hot extends Activity {
 			listItem.put("desc",descs[i]);
 			listItems.add(listItem);
 		}
-		
 		SimpleAdapter simpleAdapter = new SimpleAdapter(this,listItems,
 				R.layout.l_tab_listview_item,
 				new String[]{"acname","header","desc"},
