@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/l_activity_detail_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活动介绍"
+        android:textSize="25dp" />
+
+    <ImageView
+        android:id="@+id/l_activity_detail_bigimg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/snowpng" />
+
+    <TextView
+        android:id="@+id/l_activity_detail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="这里是活动介绍！\n这里是活动介绍的第二行！\n第三行走你！" 
+        android:textSize="15dp"/>
+
+</LinearLayout>
