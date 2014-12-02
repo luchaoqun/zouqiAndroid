@@ -4,13 +4,14 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.zouqi.NetWorkX.HTTPMethod;
 import com.zouqi.NetWorkX.JsonType;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,52 +20,65 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class Z_Organization extends Activity {
-	JSONArray OJsonArray=null;
-	String UserToken="sdNr-dpcpsqSczLKMz1r";
-	String UserID="3";
+	
+	JSONArray OJsonArray;
+	String UserToken;
+	String UserID;
 	OAdapter Odpt;
-	ListView Olv=null;
+	ListView Olv;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.v("ZOrganization","on Create");
 		super.onCreate(savedInstanceState);
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
 		UserToken=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
 		UserID=pfe.getString("userid", "1");
 		OJsonArray=new JSONArray();
 		setContentView(R.layout.activity_z__organization);
-		ListView Olv=(ListView)findViewById(R.id.ZOrgList);
+		Olv=(ListView)findViewById(R.id.ZOrgList);
 		Odpt=new OAdapter(this);
 		Olv.setAdapter(Odpt);
+		Olv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent NextIntent = new Intent(Z_Organization.this, Z_OrgDetail.class);
+				try {
+					NextIntent.putExtra("Oid", OJsonArray.getJSONObject(position).getString("id"));
+				} catch (JSONException e) {
+					Log.e("Z_Organization","On OnItemClickListener:"+e);
+					e.printStackTrace();
+				}
+				startActivity(NextIntent);
+				
+			}  
+        });
 	}
 	
 	@Override 
 	protected void onResume() {
 		super.onResume();
-		Log.v("ZOrganization","onresume");
 		String RequestURL="/users/"+UserID+"/organizations.json?user_token="+UserToken;
 		try {
 			OJsonArray=(JSONArray) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JArray).get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			Log.e("Organization-onResume",e.toString());
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
+			Log.e("Organization-onResume",e.toString());
 			e.printStackTrace();
 		}
 	}
 	
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.z__organization, menu);
 		return true;
 	}
@@ -84,7 +98,7 @@ public class Z_Organization extends Activity {
 	
 	public Runnable DataChanged=new Runnable(){
 		   public void run(){
-			   Log.d("Z_Organization","Result is "+OJsonArray.toString());
+			   Log.d("Organization-DataChanged","Result is "+OJsonArray.toString());
 			   Odpt.notifyDataSetChanged();
 		   }
 	   };
@@ -112,17 +126,15 @@ public class Z_Organization extends Activity {
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 
-		@Override
+		@SuppressLint("InflateParams") @Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if(convertView==null)
 			{
@@ -132,20 +144,17 @@ public class Z_Organization extends Activity {
 				OrgIntro.OrgNameTXT=(TextView)convertView.findViewById(R.id.zorg_name);
 				OrgIntro.OrgIntroTXT=(TextView)convertView.findViewById(R.id.zorg_intro);
 				convertView.setTag(OrgIntro);
-				Log.d("Z_Organization","NO convertView,So Creat One");
+				Log.d("Organization-getView","NO convertView,So Creat One");
 			}
-			JSONObject OrgIntroJ;
 			try {
-				OrgIntroJ = OJsonArray.getJSONObject(position);
-				OrgIntro.OrgNameTXT.setText(OrgIntroJ.getString("organization_name"));
-				OrgIntro.OrgIntroTXT.setText(OrgIntroJ.getString("organization_content"));
-				new LoadImg(OrgIntro.OrgLogo).execute(OrgIntroJ.getString("organization_logo"));
+				OrgClass OrgInfo=new OrgClass(OJsonArray.getJSONObject(position));
+				OrgIntro.OrgNameTXT.setText(OrgInfo.GetName());
+				OrgIntro.OrgIntroTXT.setText(OrgInfo.GetContent());
+				new LoadImg(OrgIntro.OrgLogo).execute(OrgInfo.GetLogoURL());
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				Log.e("Organization-getView",e.toString());
 				e.printStackTrace();
 			}
-			
-			
 			return convertView;
 		}
 		

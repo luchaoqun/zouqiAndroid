@@ -15,10 +15,10 @@
         android:text="Action" />
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/zorg_scrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/zorg_vieworgact_btn"
+        android:layout_above="@+id/Org_Action_btn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
@@ -32,44 +32,47 @@
             android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/zorg_detailorglogo"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pciraw" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/zorg_orgnametxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/zorg_orgcontenttxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/zorg_orgschoolnametxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <Button
+            android:id="@+id/zorg_vieworgact_btn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_above="@+id/Org_Action_btn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:text="View Org Activity" />
+
     </LinearLayout>
         
     </ScrollView>
 
-    <Button
-        android:id="@+id/zorg_vieworgact_btn"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_above="@+id/Org_Action_btn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="View Org Activity" />
+
 
 
 </RelativeLayout>

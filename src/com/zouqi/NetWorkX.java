@@ -35,7 +35,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 		GET,POST,DELETE,UPDATE;
 	}
 
-	static final String URLPrefix="http://192.168.43.174:3000";
+	static final String URLPrefix="http://rdd7cn.xicp.net:3000";
 	private String TheUrl=null;
 	private HTTPMethod TheHttpMethod=null;
 	private String ThePostData=null;
@@ -75,7 +75,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 		httpconn.setRequestMethod(TmpMethod);
 		httpconn.setRequestProperty("Accept", "application/json");
 		httpconn.setRequestProperty("Content-Type","application/json");
-		if(TheHttpMethod==HTTPMethod.POST||TheHttpMethod==HTTPMethod.DELETE||TheHttpMethod==HTTPMethod.UPDATE)
+		if(TheHttpMethod==HTTPMethod.POST||TheHttpMethod==HTTPMethod.UPDATE)
 		{
 			httpconn.setDoOutput(true);
 			httpconn.setUseCaches(false);
@@ -83,7 +83,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 		httpconn.setDoInput(true);
 		httpconn.setInstanceFollowRedirects(true);
 		httpconn.connect();
-		if(TheHttpMethod==HTTPMethod.POST||TheHttpMethod==HTTPMethod.DELETE||TheHttpMethod==HTTPMethod.UPDATE){
+		if(TheHttpMethod==HTTPMethod.POST||TheHttpMethod==HTTPMethod.UPDATE){
 			DataOutputStream PostData_Stream=new DataOutputStream(httpconn.getOutputStream());
 			PostData_Stream.writeBytes(ThePostData);
 			PostData_Stream.flush();
@@ -107,7 +107,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 			Log.e("NetWorkX-ConnectX",e.toString());
 			e.printStackTrace();
 		} catch (JSONException e) {
-			Log.e("NetWorkX-ConnectX",e.toString());
+			Log.w("NetWorkX-ConnectX",e.toString());
 			e.printStackTrace();
 		}
 		JsonType JType=(JsonType) params[0];
@@ -116,7 +116,12 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 				ResultData=new JSONObject(JData);
 			} catch (JSONException e) {
 				Log.e("NetWorkX-doInbackGround","Catch JSONException");
-				e.printStackTrace();
+				try {
+					ResultData=new JSONObject("{\"error\":\"JSONException,Maybe get null JSON Data\"}");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		else if(JType==JsonType.JArray){
