@@ -16,10 +16,72 @@
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/detail_activity_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/snowpng" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/detail_time_logo"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_above="@+id/detail_end_time"
+                android:layout_toLeftOf="@+id/detail_begin_time"
+                android:src="@drawable/time" />
+
+            <TextView
+                android:id="@+id/detail_persons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/detail_persons_logo"
+                android:layout_alignLeft="@+id/detail_place"
+                android:text="TextView" />
+
+            <ImageView
+                android:id="@+id/detail_place_logo"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/locate" />
+
+            <TextView
+                android:id="@+id/detail_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/detail_persons"
+                android:layout_toRightOf="@+id/detail_place_logo"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/detail_begin_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/detail_end_time"
+                android:layout_toRightOf="@+id/detail_place_logo"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/detail_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/detail_place_logo"
+                android:layout_alignLeft="@+id/detail_begin_time"
+                android:text="TextView" />
+
+            <ImageView
+                android:id="@+id/detail_persons_logo"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/detail_place_logo"
+                android:src="@drawable/persons" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
