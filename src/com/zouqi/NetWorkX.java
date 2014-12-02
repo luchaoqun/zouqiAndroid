@@ -104,10 +104,10 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 		try {
 			this.ConnectX();
 		} catch (IOException e) {
-			Log.e("NetWorkX-ConnectX","IOException");
+			Log.e("NetWorkX-ConnectX",e.toString());
 			e.printStackTrace();
 		} catch (JSONException e) {
-			Log.e("NetWorkX-ConnectX","JSONException");
+			Log.e("NetWorkX-ConnectX",e.toString());
 			e.printStackTrace();
 		}
 		JsonType JType=(JsonType) params[0];
@@ -115,7 +115,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 			try {
 				ResultData=new JSONObject(JData);
 			} catch (JSONException e) {
-				Log.e("NetWorkX-doInbackGround","JSONException");
+				Log.e("NetWorkX-doInbackGround","Catch JSONException");
 				e.printStackTrace();
 			}
 		}
@@ -123,12 +123,12 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 			try {
 				ResultData=new JSONArray(JData);
 			} catch (JSONException e) {
-				Log.e("NetWorkX-doInbackGround","JSONException");
+				Log.e("NetWorkX-doInbackGround","Catch JSONException");
 				e.printStackTrace();
 			}
 		}
 		else{
-			ResultData=null;
+			ResultData=new String(JData);
 		}
 		Log.d("NetWorkX","Receive Json Data OK,Result is"+ResultData.toString());
 		return ResultData;
@@ -137,8 +137,8 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	@Override
 	protected void onPostExecute(Object result){
 		if(result!=null){
+			Log.d("NetWorkX","Receive Finished");
 			NextFunction.run();
-			//TheAdapter.notifyDataSetChanged();
 		}
 		else
 		{

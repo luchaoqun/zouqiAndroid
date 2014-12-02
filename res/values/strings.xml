@@ -27,5 +27,6 @@
     <string name="title_activity_l_tab_person">个人信息</string>
     <string name="title_activity_w_buildactivity">W_buildactivity</string>
     <string name="title_activity_l_activity_detail">活动详情</string>
+    <string name="title_activity_z__organization">Z_Organization</string>
 
 </resources>
