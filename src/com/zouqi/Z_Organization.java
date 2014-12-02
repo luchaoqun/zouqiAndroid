@@ -106,7 +106,7 @@ public class Z_Organization extends Activity {
 		@Override
 		public int getCount()
 		{
-			Log.d("Z_Organization-GetCount`","OJsonArray.Length= "+OJsonArray.length());
+			Log.d("Z_Organization-GetCount","OJsonArray.Length= "+OJsonArray.length());
 			return OJsonArray.length();
 		}
 
