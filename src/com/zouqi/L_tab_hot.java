@@ -39,6 +39,7 @@ public class L_tab_hot extends Activity {
 			
 			try {
 				activity0 = testjson.getJSONObject(0);
+				names[0] = activity0.getString("activity_title");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -51,21 +52,22 @@ public class L_tab_hot extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_l_tab_hot);
 		
-		
+		//网络数据载入
 		try {
 			testjson = (JSONArray) new NetWorkX("/activities.json?user_token="+token,HTTPMethod.GET, null, DataChanged).execute(JsonType.JArray).get();
+			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
 		
-		try {
+		/*try {
 			names[0] = activity0.getString("activity_title");
-			//imageIds[0] = activity0.getString("activity_logo");
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
 		for(int i = 0;i < names.length;i++)
@@ -82,6 +84,9 @@ public class L_tab_hot extends Activity {
 				new int[]{R.id.name,R.id.header,R.id.desc});
 		ListView list = (ListView) findViewById(R.id.l_hot_list);
 		list.setAdapter(simpleAdapter);
+		//图片载入
+		//new LoadImg(Imgv).execute();
+		
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
   
 			@Override
