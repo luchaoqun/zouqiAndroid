@@ -34,7 +34,7 @@ public class MainActivity extends TabActivity {
         spec=tabHost.newTabSpec("我的活动").setIndicator("我的活动").setContent(intent);  
         tabHost.addTab(spec);  
           
-        intent=new Intent().setClass(this, L_tab_group.class);  
+        intent=new Intent().setClass(this, Z_Organization.class);  
         spec=tabHost.newTabSpec("我的群组").setIndicator("我的群组").setContent(intent);  
         tabHost.addTab(spec);  
           

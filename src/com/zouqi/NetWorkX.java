@@ -35,7 +35,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 		GET,POST,DELETE,UPDATE;
 	}
 
-	static final String URLPrefix="http://rdd7cn.xicp.net:3000";
+	static final String URLPrefix="http://10.0.16.200:3000";
 	private String TheUrl=null;
 	private HTTPMethod TheHttpMethod=null;
 	private String ThePostData=null;
