@@ -55,11 +55,9 @@ public class W_login extends Activity {
 				String str1 = text1.getText().toString();
 				EditText text2=(EditText)findViewById(R.id.W_log_editpasswd);//密码
 				String str2 = text2.getText().toString();
-				//{"user":{"email": "q@q.q","password": "11111111"}}   json格式
 				StringBuffer strjson= new StringBuffer();
-				strjson.append("{\"user\":{\"email\": \""+str1+"\",\"password\": \""+str2+"\"}}"); //字符串中{"email": "    字符串中","password"：“
+				strjson.append("{\"user\":{\"email\": \""+str1+"\",\"password\": \""+str2+"\"}}");
 				System.out.println(strjson);
-				//[JSONObject/JSONArray/String] eg_varible=new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Runnable]).execute([Result_JsonType]);
 				try {
 					aacc=(JSONObject) new NetWorkX("/users/sign_in",HTTPMethod.POST, strjson.toString(), DataChanged).execute(JsonType.JObject).get();
 				} catch (InterruptedException e) {

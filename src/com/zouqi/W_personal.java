@@ -50,8 +50,8 @@ public class W_personal extends Activity {
 		setContentView(R.layout.activity_w_personal);
 		ListView lv=(ListView)findViewById(R.id.listView1);
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
-		UserToken=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
-		UserID=pfe.getString("userid", "3");
+		UserToken=pfe.getString("token", "");
+		UserID=pfe.getString("userid", "");
 		listString = new ArrayList();
 		listString.add(Integer.toString(1));
 		listString.add(Integer.toString(2));
@@ -69,7 +69,6 @@ public class W_personal extends Activity {
 	}	   
 	protected void onResume() {
 		super.onResume();
-		//Log.v("ZOrganization","onresume");
 		String RequestURL="/users/"+UserID+".json?user_token="+UserToken;
 		try {
 			total=(JSONObject) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JObject).get();

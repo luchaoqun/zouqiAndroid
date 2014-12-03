@@ -46,8 +46,6 @@ public class W_register extends Activity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		/*	registerjson.append(" {\"user\":{\"password\":\""+me.str2+"\",\"password_confirmation\":\""+me.str3+"\",\"school_id\":1,\"student_id\":"+me.str4+",\"student_pwd\":\""+me.str5+"\",\"user_logo\":\""
-			+imagecontent.toString()+"\",\"email\":\""+me.str1+"\"}}");*/
 			registerjson.append(" {\"user\":{\"password\":\""+str2+"\",\"password_confirmation\":\""+str3+"\",\"school_id\":1,\"student_id\":"+str4+",\"student_pwd\":\""+str5+"\",\"user_logo\":\""+imagecontent+"\",\"email\":\""+str1+"\"}}");
 			Log.e("registerjson", registerjson.toString());
 			try {
@@ -80,8 +78,6 @@ public class W_register extends Activity {
 			@Override
 			public void onClick(View v) {    //注册post信息
 				// TODO Auto-generated method stub
-				//String base64image=imagechange(photo);
-				//registerimage.append("{\"picture\":{\"picdata\":\""+base64image+"\"}}");
 				    EditText text1=(EditText)findViewById(R.id.W_reg_editemail);
 				    EditText text2=(EditText)findViewById(R.id.W_reg_editmima);
 				    EditText text3=(EditText)findViewById(R.id.W_reg_editturepasswd);
@@ -92,10 +88,11 @@ public class W_register extends Activity {
 				     str3=text3.getText().toString();
 				     str4=text4.getText().toString();
 				     str5=text5.getText().toString();
-				registerimage.append("{\"picture\":{\"picdata\":\""+"iVBORw0KGgoAAAANSUhEUgAAACYAAAAgCAIAAADxBp3kAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gsMBjcpD94dvAAAAWBJREFUSMft1rtKA0EUBuAzl90xm5hojCnUFIpoIVqkEAs767yChVjZiKXv4gMIgmI6BRHEwkIrCSJWIqK5SYzZZGd3LhaCxVZZyASRPeXPwMfM4cwM0lrDcAvD0Avt7u3//13GZEzGZEzGpLmikVYzhBeIk8VWR4tn6TVUYJacJ4lNZ8pB5E3yEYRz2L7xW0deVRkiZ0liJ1m45q0yrwvQALBInC1nuqdVmdeN9LLEJp9E95jXfjwAeJTdS/9jzc4QQIPfZQbROZo46L6G8jPePOdNIwebxzYAVBUP5RpAGxoShjAAyAH9BfsiG8oHgCy2QvkEtkosl0LEBBm4WhatdChfpql1e7yn1eBJAfqCN1ftzBJN/oZjiG6w7F3QlhEb2u9cXvmtPGbbzsyD6LxInkK4aKXryj+NOJQRSAH60Hu/F18rdLRA2KcSJ17tNmgroxceAFSEWxFu/Hj9TfIbZ2mBCDPDKdgAAAAASUVORK5CYII="+"\"}}");
+				String base64image=imagechange(photo);
+				registerimage.append("{\"picture\":{\"picdata\":\""+base64image+"\"}}");
 				Log.e("imagejson", registerimage.toString());
 				try {
-					image = (JSONObject)new NetWorkX("/pictures.json", HTTPMethod.POST, registerimage.toString(), imgpostsuccess).execute((JsonType.JObject)).get();
+					image = (JSONObject)new NetWorkX("/pictures.json", HTTPMethod.POST, registerimage.toString(), imgpostsuccess).execute(JsonType.JObject).get();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -103,20 +100,6 @@ public class W_register extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
-			/*	registerjson.append(" {\"user\":{\"password\":\""+me.str2+"\",\"password_confirmation\":\""+me.str3+"\",\"school_id\":1,\"student_id\":"+me.str4+",\"student_pwd\":\""+me.str5+"\",\"user_logo\":\""
-				+imagecontent.toString()+"\",\"email\":\""+me.str1+"\"}}");
-				String a=registerjson.toString();
-				Log.d("registerjson",a);*/
-				//json 格式  {"user":{"password":"11111111","password_confirmation":"11111111","school_id":1,"student_id":77,"student_pwd":"1119","user_logo":"/uploads/picture/image/gravatar1.jpg","email": "q@q.q"}}
-			/*	try {
-					JSONObject messg=(JSONObject)new NetWorkX("/users.json", HTTPMethod.POST,registerjson.toString(), totalpossuccess).execute(JsonType.JObject).get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
 			}
 		});
 		ImageButton ibtn=(ImageButton)findViewById(R.id.W_reg_useriamgephoto);

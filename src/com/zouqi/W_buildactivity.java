@@ -3,6 +3,7 @@ package com.zouqi;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -27,21 +28,22 @@ import android.widget.TextView;
 public class W_buildactivity extends Activity {
 	
 	   final int  RESULT_LOAD_IMAGE = 1;
-	   ArrayList listString;
+	   HashMap<Integer, String> hashMap = new HashMap<Integer, String>(); //存放edittext的值  integer对应position
 	   myadapter listAdapter;
+	   ArrayList listString;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_w_buildactivity);
 		ListView lv=(ListView)findViewById(R.id.W_buildactivitylistview);
 		listString = new ArrayList();
-		listString.add(Integer.toString(1));
+		/*listString.add(Integer.toString(1));
 		listString.add(Integer.toString(2));
 		listString.add(Integer.toString(3));
-		listString.add(Integer.toString(4));
-		/*for(int i=0;i<8;i++){
+		listString.add(Integer.toString(4));*/
+		for(int i=0;i<8;i++){
 			listString.add(Integer.toString(i));
-		}*/
+		}
 		listAdapter = new myadapter(this);
 		   lv.setAdapter(listAdapter);
 		   listAdapter.notifyDataSetChanged();
@@ -120,7 +122,7 @@ public class W_buildactivity extends Activity {
 			    		
 			    	case TYPE_2:
 			    	   convertView=inflater_w.inflate(R.layout.activity_w_buildactivity_padding2, parent, false);
-			    	
+			    	   
 			    	 /*  convertView.setTag(holder2);
 			    	   Log.e("holder2", "NULL "); */
 			    	   break;
@@ -182,7 +184,7 @@ public class W_buildactivity extends Activity {
 				return convertView;
 			}
       }
-	class itemlistener implements OnClickListener{
+/*	class itemlistener implements OnClickListener{
 		
 		private int w_position;
 		public itemlistener(int pos){
@@ -195,7 +197,7 @@ public class W_buildactivity extends Activity {
              intent.setClass(W_buildactivity.this,W_personal.class);
              startActivity(intent);
 		}
-	}
+	}*/
 	 public static final String IMAGE_UNSPECIFIED = "image/*";
 	 public final static int PHOTO_ZOOM = 0;
 	 public final static int PHOTO_RESULT = 2;
