@@ -39,7 +39,8 @@ public class Z_Organization extends Activity {
 		super.onCreate(savedInstanceState);
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
 		UserToken=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
-		UserID=pfe.getString("userid", "1");
+		UserID=pfe.getString("userid", "3");
+		Log.d("!!!!!",UserID.toString());
 		OJsonArray=new JSONArray();
 		setContentView(R.layout.activity_z__organization);
 		Olv=(ListView)findViewById(R.id.ZOrgList);
