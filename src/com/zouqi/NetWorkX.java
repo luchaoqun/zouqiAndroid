@@ -138,6 +138,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	protected void onPostExecute(Object result){
 		if(result!=null){
 			NextFunction.run();
+			Log.d("NetWorkX","Success");
 			//TheAdapter.notifyDataSetChanged();
 		}
 		else

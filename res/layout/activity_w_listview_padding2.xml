@@ -6,13 +6,11 @@
 
     <ImageView
         android:id="@+id/W_listv_userimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
-        android:maxWidth="130dp"
-        android:maxHeight="130dp"
         android:src="@drawable/snowpng" />
 
     <TextView

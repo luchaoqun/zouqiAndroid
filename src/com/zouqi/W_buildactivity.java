@@ -35,13 +35,13 @@ public class W_buildactivity extends Activity {
 		setContentView(R.layout.activity_w_buildactivity);
 		ListView lv=(ListView)findViewById(R.id.W_buildactivitylistview);
 		listString = new ArrayList();
-	/*	listString.add(Integer.toString(1));
+		listString.add(Integer.toString(1));
 		listString.add(Integer.toString(2));
 		listString.add(Integer.toString(3));
-		listString.add(Integer.toString(4));*/
-		for(int i=0;i<8;i++){
+		listString.add(Integer.toString(4));
+		/*for(int i=0;i<8;i++){
 			listString.add(Integer.toString(i));
-		}
+		}*/
 		listAdapter = new myadapter(this);
 		   lv.setAdapter(listAdapter);
 		   listAdapter.notifyDataSetChanged();
