@@ -1,12 +1,20 @@
 package com.zouqi;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.zouqi.NetWorkX.HTTPMethod;
+import com.zouqi.NetWorkX.JsonType;
 import com.zouqi.W_buildactivity.myadapter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,17 +24,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class L_activity_detail extends Activity {
 
-	 ArrayList listString;
-	 myadapter listAdapter;
+	public String ActId;
+	private  JSONObject json_detail=new JSONObject();
+	 
+	 private ArrayList listString;
+	 private myadapter listAdapter;
+	 private String  actID="1";
+	 private String UserToken=null;
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_l_detail);
+		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
+		UserToken=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
+		
+		Intent ExtraParams=getIntent();
+		ActId=ExtraParams.getStringExtra("Hid");
 		ListView lv_ad=(ListView)findViewById(R.id.L_activity_detail_listview);
 		listString = new ArrayList();
 		
@@ -39,6 +59,23 @@ public class L_activity_detail extends Activity {
 		   lv_ad.setAdapter(listAdapter);
 			
 	}
+	protected void onResume() {
+		super.onResume();
+		String RequestURL="/activities/"+actID+".json?user_token="+UserToken;
+		try {
+			json_detail=(JSONObject) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JObject).get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+	public Runnable DataChanged=new Runnable(){
+		   public void run(){
+			   Log.d("regmessage","Result is "+json_detail.toString());
+			   listAdapter.notifyDataSetChanged();
+		   }
+	   };
 	class myadapter extends BaseAdapter{
 		Context mContext;
 		LayoutInflater inflater_w;
@@ -53,6 +90,18 @@ public class L_activity_detail extends Activity {
 		final int TYPE_7 = 6;
 		final int TYPE_8 = 7;
 		private ArrayList<Integer> TypeList = new ArrayList<Integer>();
+		class ActTitle{
+			TextView acTitle;
+			ImageView actLogo;
+			TextView beginTime;
+			TextView endTime;
+			TextView actPlace;
+			TextView actPerson;
+		};
+		class ActIntro{
+			ImageView actImg;
+			TextView actDescs;
+		};
 		public myadapter(Context context){
 			                  mContext = context;
                               inflater_w = LayoutInflater.from(mContext);
@@ -83,25 +132,29 @@ public class L_activity_detail extends Activity {
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				
-			/*	viewHolder1 holder1 = null;
-				viewHolder1 holder2 = null;
-				viewHolder2 holder2=null;
-			    viewHolder3 holder3 = null;
-			    viewHolder4 holder4 = null;
-			    viewHolder5 holder5=null;*/
-				//viewHolder8 holder8=null;
 			    int type=getItemViewType(position);
+			    ActTitle actTitle=null;
+			    ActIntro actIntro=null;
 			    Log.e("position", Integer.toString(position));
 			    	switch(type)
 			    	{
 			    	case TYPE_1:
 			    		convertView=inflater_w.inflate(R.layout.l_activity_detail_title, parent, false);
-
+			    		actTitle = new ActTitle();
+			    		actTitle.acTitle=(TextView)convertView.findViewById(R.id.l_activity_detail_title);
+			    		actTitle.actLogo=(ImageView)convertView.findViewById(R.id.detail_activity_logo);
+			    		actTitle.beginTime=(TextView)convertView.findViewById(R.id.detail_begin_time);
+			    		actTitle.endTime=(TextView)convertView.findViewById(R.id.detail_end_time);
+			    		actTitle.actPlace=(TextView)convertView.findViewById(R.id.detail_place);
+			    		actTitle.actPerson=(TextView)convertView.findViewById(R.id.detail_persons);
+			    		convertView.setTag(actTitle);
 			    		break;
 			    		
 			    	case TYPE_2:
 			    	   convertView=inflater_w.inflate(R.layout.l_activity_detail_introduce, parent, false);
-			    	
+			    	   actIntro = new ActIntro();
+			    	   actIntro.actImg=(ImageView)convertView.findViewById(R.id.l_activity_detail_bigimg);
+			    	   actIntro.actDescs=(TextView)convertView.findViewById(R.id.l_activity_detail_text);
 			    	   break;
 			    	case TYPE_3:
 			    		convertView=inflater_w.inflate(R.layout.l_activity_detail_pub_button, parent, false);
@@ -125,6 +178,29 @@ public class L_activity_detail extends Activity {
 			    		
 					    break;
 		    	}
+			    
+			    	switch(type){
+			    	case TYPE_1:
+			    		try {
+							actTitle.acTitle.setText(json_detail.getJSONObject("activity").getString("activity_title"));
+							actTitle.beginTime.setText(json_detail.getJSONObject("activity").getString("activity_begin_time"));
+							actTitle.endTime.setText(json_detail.getJSONObject("activity").getString("activity_end_time"));
+							actTitle.actPlace.setText(json_detail.getJSONObject("activity").getString("activity_place"));
+							actTitle.actPerson.setText(json_detail.getJSONObject("activity").getString("owner_name"));
+							new LoadImg(actTitle.actLogo).execute(json_detail.getJSONObject("activity").getString("activity_logo"));
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+			    		break;
+			    	case TYPE_2:
+			    		try {
+							actIntro.actDescs.setText(json_detail.getJSONObject("activity").getString("activity_content"));
+							new LoadImg(actIntro.actImg).execute(json_detail.getJSONObject("activity").getString("activity_pic"));
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+			    		break;
+			    	}
 			    
 				return convertView;
 			}

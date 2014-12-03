@@ -13,15 +13,14 @@
 
     <ImageView
         android:id="@+id/l_activity_detail_bigimg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="130dp"
         android:src="@drawable/snowpng" />
 
     <TextView
         android:id="@+id/l_activity_detail_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="这里是活动介绍！\n这里是活动介绍的第二行！\n第三行走你！" 
         android:textSize="15dp"/>
 
 </LinearLayout>
