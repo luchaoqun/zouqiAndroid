@@ -17,8 +17,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".W_login"
-            android:label="@string/title_activity_w_buildactivity"
-            android:theme="@style/AppTheme" >
+            android:label="@string/title_activity_w_buildactivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

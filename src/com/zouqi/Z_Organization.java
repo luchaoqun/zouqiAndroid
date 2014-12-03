@@ -33,6 +33,7 @@ public class Z_Organization extends Activity {
 	String UserID;
 	OAdapter Odpt;
 	ListView Olv;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,6 @@ public class Z_Organization extends Activity {
 					e.printStackTrace();
 				}
 				startActivity(NextIntent);
-				
 			}  
         });
 	}
@@ -78,11 +78,10 @@ public class Z_Organization extends Activity {
 		}
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.z__organization, menu);
-		return true;
-	}
+	public boolean onPrepareOptionsMenu(Menu menu) {
+       Log.d("OnprepareOptionsMenu","hahahahahahahaha");
+        return true;
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -117,7 +116,6 @@ public class Z_Organization extends Activity {
 		    this.context = context;
 	        this.layoutInflater = LayoutInflater.from(this.context);  
 		}
-
 		@Override
 		public int getCount()
 		{
