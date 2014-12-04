@@ -1,14 +1,10 @@
 package com.zouqi;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.zouqi.NetWorkX.HTTPMethod;
-import com.zouqi.NetWorkX.JsonType;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +19,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import com.zouqi.NetWorkX.HTTPMethod;
+import com.zouqi.NetWorkX.JsonType;
 
 public class W_register extends Activity {
 	public static final int CAMERA_REQUEST = 1888; 
@@ -43,7 +42,6 @@ public class W_register extends Activity {
 				imagecontent = image.getJSONObject("picture").getString("url");
 				Log.e("image",imagecontent );
 			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			registerjson.append(" {\"user\":{\"password\":\""+str2+"\",\"password_confirmation\":\""+str3+"\",\"school_id\":1,\"student_id\":"+str4+",\"student_pwd\":\""+str5+"\",\"user_logo\":\""+imagecontent+"\",\"email\":\""+str1+"\"}}");
@@ -52,10 +50,8 @@ public class W_register extends Activity {
 				JSONObject messg=(JSONObject)new NetWorkX("/users.json", HTTPMethod.POST,registerjson.toString(), totalpossuccess).execute(JsonType.JObject).get();
 				Log.d("registerjson",registerjson.toString());
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -63,7 +59,6 @@ public class W_register extends Activity {
 	Runnable totalpossuccess=new Runnable() {
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			Intent a=new Intent();
 			a.setClass(W_register.this,W_login.class);
 			startActivity(a);
@@ -77,7 +72,6 @@ public class W_register extends Activity {
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {    //注册post信息
-				// TODO Auto-generated method stub
 				    EditText text1=(EditText)findViewById(R.id.W_reg_editemail);
 				    EditText text2=(EditText)findViewById(R.id.W_reg_editmima);
 				    EditText text3=(EditText)findViewById(R.id.W_reg_editturepasswd);
@@ -94,10 +88,8 @@ public class W_register extends Activity {
 				try {
 					image = (JSONObject)new NetWorkX("/pictures.json", HTTPMethod.POST, registerimage.toString(), imgpostsuccess).execute(JsonType.JObject).get();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
 			}
@@ -107,7 +99,6 @@ public class W_register extends Activity {
 			
 			@Override
 			public void onClick(View v) {   //用户头像调用照相机
-				// TODO Auto-generated method stub
 				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
                 startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 			}

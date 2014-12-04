@@ -2,7 +2,7 @@ package com.zouqi;
 
 import java.util.ArrayList;
 
-import com.zouqi.W_buildactivity.myadapter;
+
 
 import android.app.Activity;
 import android.content.Context;

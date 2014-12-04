@@ -2,15 +2,13 @@ package com.zouqi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.zouqi.NetWorkX.HTTPMethod;
-import com.zouqi.NetWorkX.JsonType;
-
-import android.R.integer;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -29,6 +27,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.zouqi.NetWorkX.HTTPMethod;
+import com.zouqi.NetWorkX.JsonType;
+
 public class W_buildactivityscroll extends Activity {
 	 public static final String IMAGE_UNSPECIFIED = "image/*";
 	 public final static int PHOTO_ZOOM = 0;
@@ -36,9 +37,9 @@ public class W_buildactivityscroll extends Activity {
 	 private byte[] mContent;
 	 private Bitmap mybitmap1;
 	 private Bitmap mybitmap2;
-	 StringBuffer  logopoststr=new StringBuffer();
-	 StringBuffer  picpoststr=new StringBuffer();
-	 StringBuffer  totalstr=new StringBuffer();
+	 String  logopoststr=new String();
+	 String picpoststr=new String();
+	 String  totalstr=new String();
 	 JSONObject jsonxiaotu;
 	 JSONObject jsondatu;
 	 JSONObject total;
@@ -46,9 +47,8 @@ public class W_buildactivityscroll extends Activity {
 	 String base64big;
 	 String smallroad=null;
 	 String bigroad=null;
-	 SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
-	 String UserToken=pfe.getString("token", "");
-	 String UserID=pfe.getString("userid", "");
+	 String UserToken;
+	 String UserID;
 	 Runnable success=new  Runnable() {
 		@Override
 		public void run() {}
@@ -59,12 +59,16 @@ public class W_buildactivityscroll extends Activity {
 		public void run() {
 			Intent personal=new Intent();
 			personal.setClass(W_buildactivityscroll.this, W_personal.class);
+			startActivity(personal);
 		}
 	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_w_buildactivityscroll);
+		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
+		UserToken=pfe.getString("token", "");
+		UserID=pfe.getString("userid", "");
 		  final EditText  text1=(EditText)findViewById(R.id.W_editactivityname);
 	      final EditText  text2=(EditText)findViewById(R.id.W_buildactivityeditlocation);
 	      final EditText  text3=(EditText)findViewById(R.id.W_editbuildactivitytime);
@@ -77,7 +81,7 @@ public class W_buildactivityscroll extends Activity {
 		  String str3;
 		  String str4;
 		  String str5;*/
-		  logopoststr.append("{\"picture\":{\"picdata\":\""+base64small+"\"}}");
+		/*  logopoststr.append("{\"picture\":{\"picdata\":\""+base64small+"\"}}");
 		  picpoststr.append("{\"picture\":{\"picdata\":\""+base64big+"\"}}");
 		  Log.e("xiaotu",logopoststr.toString());
 		  Log.e("datu",picpoststr.toString());
@@ -88,12 +92,11 @@ public class W_buildactivityscroll extends Activity {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-		}
+		}*/
 		Button xiaotu=(Button)findViewById(R.id.W_buildactivity_btnxiaotu);
 		xiaotu.setOnClickListener(new OnClickListener() { //监听小图按钮
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				 Intent intent = new Intent(
 		         Intent.ACTION_PICK,
 		         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -105,25 +108,48 @@ public class W_buildactivityscroll extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				 Intent intent = new Intent(
 				         Intent.ACTION_PICK,
 				         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 				         startActivityForResult(intent, 2);
 			}
 		});
+		/*  logopoststr="{\"picture\":{\"picdata\":\""+base64small+"\"}}";
+		  picpoststr="{\"picture\":{\"picdata\":\""+base64big+"\"}}";
+		  Log.e("xiaotu",logopoststr.toString());
+		  Log.e("datu",picpoststr.toString());
+		  try {
+			jsonxiaotu=(JSONObject) new NetWorkX("/pictures.json", HTTPMethod.POST, logopoststr.toString(), success).execute(JsonType.JObject).get();
+			jsondatu=(JSONObject) new NetWorkX("/pictures.json", HTTPMethod.POST, picpoststr.toString(), success).execute(JsonType.JObject).get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}*/
 		Button build=(Button)findViewById(R.id.W_buildactivity_truebuild);
 		build.setOnClickListener(new OnClickListener() { //监听发起活动按钮
-			
 			@Override
 			public void onClick(View v) {
+				
+				  logopoststr="{\"picture\":{\"picdata\":\""+base64small+"\"}}";
+				  picpoststr="{\"picture\":{\"picdata\":\""+base64big+"\"}}";
+				  Log.e("xiaotu",logopoststr.toString());
+				  Log.e("datu",picpoststr.toString());
+				  try {
+					jsonxiaotu=(JSONObject) new NetWorkX("/pictures.json", HTTPMethod.POST, logopoststr.toString(), success).execute(JsonType.JObject).get();
+					jsondatu=(JSONObject) new NetWorkX("/pictures.json", HTTPMethod.POST, picpoststr.toString(), success).execute(JsonType.JObject).get();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+				
 			try {
 				smallroad=jsonxiaotu.getJSONObject("picture").getString("url");
 				Log.e("smallroad", smallroad);
 				bigroad=jsondatu.getJSONObject("picture").getString("url");
 				Log.e("bigroad", bigroad);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			 }
 			     EditText  text1=(EditText)findViewById(R.id.W_editactivityname);
@@ -141,16 +167,18 @@ public class W_buildactivityscroll extends Activity {
 			     String str6=text6.getText().toString();
 			     String str7=text7.getText().toString();
 			     int max=Integer.parseInt(str5);
-			     totalstr.append("{\"activity\":{\"activity_title\":\""+str1+"\",\"activity_content\":\""+str7+"\",\"activity_place\":\""+str2+"\",\"activity_logo\":\""+smallroad+",\"activity_pic\":\""+
-			     bigroad+"\",\"activity_place_lat\":2.0,\"activity_place_lon\":2.0,\"activity_people_max\":"+max+",\"activity_begin_time\":\""+str3+"\",\"activity_end_time\":\""+str4+"\"}}");
-			     Log.e("totalstr", totalstr.toString());
+			     totalstr="{\"activity\":{\"activity_title\":\""+str1+"\",\"activity_content\":\""+str7+"\",\"activity_place\":\""+str2+"\",\"activity_logo\":\""+smallroad+"\",\"activity_pic\":\""+
+			     bigroad+"\",\"activity_place_lat\":2.0,\"activity_place_lon\":2.0,\"activity_people_max\":"+max+",\"activity_begin_time\":\""+str3+"\",\"activity_end_time\":\""+str4+"\"}}";
+			     Log.e("totalstr", totalstr);
+			     //String totalfinal=URLEncoder.encode(totalstr, "utf-8");
 		       	 try {
-					total=(JSONObject)new NetWorkX("/activities.json?user_token="+UserID, HTTPMethod.POST, totalstr.toString(), totalsuccess).execute(JsonType.JObject).get();
+		       	   String totalfinal=URLEncoder.encode(totalstr, "utf-8");
+					total=(JSONObject)new NetWorkX("/activities.json?user_token="+UserToken, HTTPMethod.POST, totalstr, totalsuccess).execute(JsonType.JObject).get();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
 			}

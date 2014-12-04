@@ -32,18 +32,8 @@ public class W_personal extends Activity {
 	   JSONObject total=new JSONObject();
 	   JSONObject first=new JSONObject();
 	   JSONObject second=new JSONObject();
-	   
 	  String UserToken=null;
 	  String UserID=null;
-	  /* JSONObject TestJson;
-	   public Runnable DataChanged=new Runnable(){
-		   public void run(){
-			   Log.d("W_person_By_R7","Run the Datachanged");
-			   Log.d("W_person_By_R7","Result is "+TestJson.toString());
-			   listAdapter.notifyDataSetChanged();
-		   }
-	   };*/
-	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,18 +42,16 @@ public class W_personal extends Activity {
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
 		UserToken=pfe.getString("token", "");
 		UserID=pfe.getString("userid", "");
-		listString = new ArrayList();
+		/*listString = new ArrayList();
 		listString.add(Integer.toString(1));
-		listString.add(Integer.toString(2));
-		listString.add(Integer.toString(2));
-		listString.add(Integer.toString(2));
-		listString.add(Integer.toString(2));
-		listString.add(Integer.toString(2));
-		for(int i=0;i<registermeg.length();i++)
+		listString.add(Integer.toString(1));
+		listString.add(Integer.toString(1));
+		listString.add(Integer.toString(1));
+		listString.add(Integer.toString(1));*/
+		/*for(int i=0;i<registermeg.length();i++)
 		{
 			listString.add(Integer.toString(i));
-		}
-	   
+		}*/
 	   listAdapter = new myAdapter(this);
 	   lv.setAdapter(listAdapter);
 	}	   
@@ -72,11 +60,12 @@ public class W_personal extends Activity {
 		String RequestURL="/users/"+UserID+".json?user_token="+UserToken;
 		try {
 			total=(JSONObject) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JObject).get();
+			registermeg=total.getJSONObject("user").getJSONArray("myactivity");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
@@ -93,59 +82,63 @@ public class W_personal extends Activity {
 		final int TYPE_1 = 0;
 		final int TYPE_2 = 1;
 		final int TYPE_3 = 2;
+		final int TYPE_4 = 3;
+		final int TYPE_5 = 4;
 		private ArrayList<Integer> TypeList = new ArrayList<Integer>();
 		public myAdapter(Context context){
 			                  mContext = context;
                               inflater = LayoutInflater.from(mContext);
 		}
 			public int getCount() {
-				// TODO Auto-generated method stub
-				//return registermeg.length()+1;
-				return listString.size();
+				int a;
+				a=registermeg.length();
+				String s=""+a;
+				Log.e("registerlength",s );
+				return registermeg.length()+4;
+				//return listString.size();
 			}
 			@Override
 			public int getItemViewType(int position) {
-			// TODO Auto-generated method stub
 				//int p = position%2;
 				int p = position;
 			    if(p == 0)
-			     return TYPE_1;
-			  else if(position+3>=listString.size())
+			      return TYPE_1;
+			  else if(position==registermeg.length()+1)
 				  return TYPE_3;
+			  else if(position==registermeg.length()+2)
+				  return TYPE_4;
+			  else if(position==registermeg.length()+3)
+				  return TYPE_5;
 				else //if(listString.size()-position>=4)//position从零开始
-	                return TYPE_2;
+	              return TYPE_2;
+			
 			}
 
 			//@Override
 
 			public int getViewTypeCount() {
-			// TODO Auto-generated method stub
              return 1;
 			}
 			public Object getItem(int arg0) {
-			// TODO Auto-generated method stub
 			return null;
 		   }
 			@Override
 			public long getItemId(int position) {
-				// TODO Auto-generated method stub
 				return position;
 			}
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
-				// TODO Auto-generated method stub
 				viewHolder1 holder1 = null;
 			    viewHolder2 holder2 = null;
 			    int type=getItemViewType(position);
 			    try {
 					first=total.getJSONObject("user");
 				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			    Log.e("position", Integer.toString(position));
-		 /*   if(convertView==null){
+		  /*  if(convertView==null){
 			    	Log.e("converview","NULL");
 			        */
 			    	switch(type)
@@ -160,6 +153,17 @@ public class W_personal extends Activity {
 			    		holder1.zantext=(TextView)convertView.findViewById(R.id.W_per_textzanshu);
 			    		holder1.caitext=(TextView)convertView.findViewById(R.id.W_per_textcaishu);
 			    		holder1.geqian=(TextView)convertView.findViewById(R.id.W_per_geqian);
+			    		try {
+							holder1.username.setText(first.getString("email"));
+							//int a;
+							//a=first.getInt("parise");
+				    		holder1.geqian.setText(first.getString("school_name"));
+				    		//holder1.zantext.setText(a);
+				    		new LoadImg(holder1.userimage).execute(first.getString("user_logo"));
+				    		break;
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 			    		convertView.setTag(holder1);
 			    		Log.e("holder1", "NULL "); 
 			    		break;
@@ -173,14 +177,30 @@ public class W_personal extends Activity {
 			    	   holder2.userimage=(ImageView)convertView.findViewById(R.id.W_listv_userimage);
 			    	   holder2.image2=(ImageView)convertView.findViewById(R.id.W_listv_timeimage);
 			    	   holder2.image3=(ImageView)convertView.findViewById(R.id.W_listv_loactionimage);
+			    	   try {
+							second=registermeg.getJSONObject(position-1);//position=0时是个人信息
+					    	new LoadImg(holder2.userimage).execute(second.getString("activity_logo"));
+					    	holder2.activityname.setText(second.getString("activity_title"));
+					    	holder2.loactiontext.setText(second.getString("activity_place"));
+					    	holder2.timetext.setText(second.getString("activity_begin_time"));
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 			    	   convertView.setTag(holder2);
 			    	   Log.e("holder2", "NULL "); 
 			    	   break;
 			    	case TYPE_3:
 			    		convertView=inflater.inflate(R.layout.activity_w_listview_padding3, parent,false);
+			    		break;
+			    	case TYPE_4:
+			    		convertView=inflater.inflate(R.layout.activity_w_listview_padding4, parent,false);
+			    		break;
+			    	case TYPE_5:
+			    		convertView=inflater.inflate(R.layout.activity_w_listview_padding5, parent,false);
+			    		break;
 			    	}
 			//   }
-		/*   else{
+		  /*else{
 			    	switch(type)
 			    	{
 			    	case TYPE_1:
@@ -191,11 +211,7 @@ public class W_personal extends Activity {
 			    		break;
 			    	}
 			    }*/
-			    	/*OrgIntroJ = registermeg.getJSONObject(position);
-					OrgIntro.OrgNameTXT.setText(OrgIntroJ.getString("organization_name"));
-					OrgIntro.OrgIntroTXT.setText(OrgIntroJ.getString("organization_content"));
-					new LoadImg(OrgIntro.OrgLogo).execute(OrgIntroJ.getString("organization_logo"));*/
-			    	switch(type){
+			    	/*switch(type){
 			    	case TYPE_1:
 						try {
 							holder1.username.setText(first.getString("email"));
@@ -206,23 +222,20 @@ public class W_personal extends Activity {
 				    		new LoadImg(holder1.userimage).execute(first.getString("user_logo"));
 				    		break;
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 			    	case TYPE_2:
 						try {
-							registermeg=first.getJSONArray("myactivity");
 							second=registermeg.getJSONObject(position-1);//position=0时是个人信息
 					    	new LoadImg(holder2.userimage).execute(second.getString("activity_logo"));
 					    	holder2.activityname.setText(second.getString("activity_title"));
 					    	holder2.loactiontext.setText(second.getString("activity_place"));
 					    	holder2.timetext.setText(second.getString("activity_begin_time"));
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 			    		
-			    	}
+			    	}*/
 		/*	    switch (type){
 			    case TYPE_1:
 			    	holder1.text1.setText("wyh");
