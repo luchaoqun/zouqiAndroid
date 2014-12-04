@@ -52,11 +52,11 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	}
 	
 	public void ConnectX() throws IOException, JSONException{
-	
 		StringBuilder response =new StringBuilder();
 		Log.d("NetWork Debug Message","Url is "+TheUrl);
 		URL url=new URL(TheUrl);
 		HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
+		//httpconn.setConnectTimeout(1000);
 		String TmpMethod=null;
 		switch (TheHttpMethod){
 			case GET:

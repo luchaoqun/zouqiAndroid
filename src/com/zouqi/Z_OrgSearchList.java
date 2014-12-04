@@ -22,67 +22,86 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.SearchView.OnQueryTextListener;
 
-public class Z_Organization extends Activity {
+public class Z_OrgSearchList extends Activity {
 	
-	JSONArray OJsonArray;
-	String UserToken;
-	String UserID;
+	SearchView Sorg;
+	ListView Olist;
+	JSONArray OrgArray;
 	OAdapter Odpt;
-	ListView Olv;
-
+	private String UserToken;
+	private final String PathPreFix="/organizations/search?user_token=";
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_z__org_search_list);
+		Sorg=(SearchView) findViewById(R.id.zorgsearch_searchview);
+		Olist=(ListView) findViewById(R.id.zorgsearch_listView);
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
-		UserToken=pfe.getString("token", "");
-		UserID=pfe.getString("userid", "");
-		OJsonArray=new JSONArray();
-		setContentView(R.layout.activity_z__organization);
-		Olv=(ListView)findViewById(R.id.ZOrgList);
+		UserToken=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
+		OrgArray=new JSONArray();
 		Odpt=new OAdapter(this);
-		Olv.setAdapter(Odpt);
-		Olv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
+		Olist.setAdapter(Odpt);
+		Olist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Intent NextIntent = new Intent(Z_OrgSearchList.this, Z_OrgDetail.class);
+					try {
+						NextIntent.putExtra("Oid", OrgArray.getJSONObject(position).getString("id"));
+					} catch (JSONException e) {
+						Log.e("Z_OrgSearch","On OnItemClickListener:"+e);
+						e.printStackTrace();
+					}
+					startActivity(NextIntent);
+				}  
+	        });
+		Sorg.setOnQueryTextListener(new OnQueryTextListener(){
+			
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Intent NextIntent = new Intent(Z_Organization.this, Z_OrgDetail.class);
+		    public boolean onQueryTextChange(String newText)
+		    {
+				Log.d("ZOrgSearch","OnQueryTextChange");
+		         if (newText.isEmpty()) 
+		         {
+		        	 Olist.clearAnimation();
+		         }       
+		         return true;
+		    }
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				String PostData="{\"organization_name\":\""+query+"\"}";
+				Log.d("ZOrgSearch",PostData);
 				try {
-					NextIntent.putExtra("Oid", OJsonArray.getJSONObject(position).getString("id"));
-				} catch (JSONException e) {
-					Log.e("Z_Organization","On OnItemClickListener:"+e);
+					OrgArray=(JSONArray) new NetWorkX(PathPreFix+UserToken,HTTPMethod.POST,PostData,ReceiveResult).execute(JsonType.JArray).get();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				startActivity(NextIntent);
-			}  
-        });
-	}
+				return true;
+			}
+			});
+		Sorg.setSubmitButtonEnabled(true);
+	};
 	
-	@Override 
-	protected void onResume() {
-		super.onResume();
-		String RequestURL="/users/"+UserID+"/organizations.json?user_token="+UserToken;
-		try {
-			OJsonArray=(JSONArray) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JArray).get();
-		} catch (InterruptedException e) {
-			Log.e("Organization-onResume",e.toString());
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			Log.e("Organization-onResume",e.toString());
-			e.printStackTrace();
+	
+
+
+	public Runnable ReceiveResult=new Runnable(){
+		public void run(){
+			Odpt.notifyDataSetChanged();
 		}
-	}
+	};
 	
-	
-	public Runnable DataChanged=new Runnable(){
-		   public void run(){
-			   Log.d("Organization-DataChanged","Result is "+OJsonArray.toString());
-			   Odpt.notifyDataSetChanged();
-		   }
-	   };
-	  
 	class OAdapter extends BaseAdapter {
 		private Context context;
 		private LayoutInflater layoutInflater; 
@@ -99,8 +118,8 @@ public class Z_Organization extends Activity {
 		@Override
 		public int getCount()
 		{
-			Log.d("Z_Organization-GetCount","OJsonArray.Length= "+OJsonArray.length());
-			return OJsonArray.length();
+			Log.d("Z_Organization-GetCount","OJsonArray.Length= "+OrgArray.length());
+			return OrgArray.length();
 		}
 
 		@Override
@@ -126,7 +145,8 @@ public class Z_Organization extends Activity {
 				Log.d("Organization-getView","NO convertView,So Creat One");
 			}
 			try {
-				OrgClass OrgInfo=new OrgClass(OJsonArray.getJSONObject(position));
+				Log.d("ZOrgSearch","Will Add Item:"+OrgArray.getJSONObject(position).toString());
+				OrgClass OrgInfo=new OrgClass(OrgArray.getJSONObject(position));
 				OrgIntro.OrgNameTXT.setText(OrgInfo.GetName());
 				OrgIntro.OrgIntroTXT.setText(OrgInfo.GetContent());
 				new LoadImg(OrgIntro.OrgLogo).execute(OrgInfo.GetLogoURL());
@@ -137,6 +157,8 @@ public class Z_Organization extends Activity {
 			return convertView;
 		}
 		
-	};
-	   
+	}
+
+
+
 }

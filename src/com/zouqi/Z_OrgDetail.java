@@ -37,6 +37,16 @@ public class Z_OrgDetail extends Activity {
 	private JSONObject RawOrgJData,OrgActionResult;
 	private boolean Joined;
 
+	View.OnClickListener OActListLsner=new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent NextIntent=new Intent(Z_OrgDetail.this,Z_OrgAct.class);
+			NextIntent.putExtra("Oid",OrgId);
+			startActivity(NextIntent);
+		}
+	};
+	
 	View.OnClickListener OActionBtnLsner=new View.OnClickListener() {
 		public void onClick(View v) {
 			if(Joined){
@@ -113,6 +123,7 @@ public class Z_OrgDetail extends Activity {
 		ZOActvtBtn.setBackgroundColor(Color.argb(0x00, 0xff, 0xff, 0xff));
 		ZOActvtBtn.setTextColor(Color.argb(0xff, 0x00, 0x96, 0x88));
 		ZOActionBtn.setOnClickListener(OActionBtnLsner);
+		ZOActvtBtn.setOnClickListener(OActListLsner);
 	}
 
 	@Override

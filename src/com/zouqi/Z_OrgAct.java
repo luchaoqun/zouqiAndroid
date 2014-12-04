@@ -24,65 +24,65 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Z_Organization extends Activity {
-	
-	JSONArray OJsonArray;
-	String UserToken;
-	String UserID;
-	OAdapter Odpt;
-	ListView Olv;
+public class Z_OrgAct extends Activity {
 
+	ListView OAList;
+	JSONArray OActArray;
+	OAdapter Odpt;
+	private String OrgId;
+	String UserToken;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
-		UserToken=pfe.getString("token", "");
-		UserID=pfe.getString("userid", "");
-		OJsonArray=new JSONArray();
-		setContentView(R.layout.activity_z__organization);
-		Olv=(ListView)findViewById(R.id.ZOrgList);
+		setContentView(R.layout.activity_z__org);
+		OAList=(ListView) findViewById(R.id.zorgact_list);
+		OActArray=new JSONArray();
 		Odpt=new OAdapter(this);
-		Olv.setAdapter(Odpt);
-		Olv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
+		OAList.setAdapter(Odpt);
+		OAList.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent NextIntent = new Intent(Z_Organization.this, Z_OrgDetail.class);
+				Intent NextIntent = new Intent(Z_OrgAct.this, L_activity_detail.class);
 				try {
-					NextIntent.putExtra("Oid", OJsonArray.getJSONObject(position).getString("id"));
+					NextIntent.putExtra("Aid", OActArray.getJSONObject(position).getString("id"));
 				} catch (JSONException e) {
-					Log.e("Z_Organization","On OnItemClickListener:"+e);
+					Log.e("Z_OrgAct","On OnItemClickListener:"+e);
 					e.printStackTrace();
 				}
 				startActivity(NextIntent);
 			}  
         });
+		Intent ExtraParams=getIntent();
+		OrgId=ExtraParams.getStringExtra("Oid");
+		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
+		UserToken=pfe.getString("token", "");
 	}
-	
+
 	@Override 
 	protected void onResume() {
 		super.onResume();
-		String RequestURL="/users/"+UserID+"/organizations.json?user_token="+UserToken;
+		String RequestURL="/organizations/"+OrgId+"/activities.json?user_token="+UserToken;
 		try {
-			OJsonArray=(JSONArray) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JArray).get();
+			OActArray=(JSONArray) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JArray).get();
 		} catch (InterruptedException e) {
-			Log.e("Organization-onResume",e.toString());
+			Log.e("OrgAct-onResume",e.toString());
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			Log.e("Organization-onResume",e.toString());
+			Log.e("OrgAct-onResume",e.toString());
 			e.printStackTrace();
 		}
 	}
 	
-	
+
 	public Runnable DataChanged=new Runnable(){
 		   public void run(){
-			   Log.d("Organization-DataChanged","Result is "+OJsonArray.toString());
+			   Log.d("Organization-DataChanged","Result is "+OActArray.toString());
 			   Odpt.notifyDataSetChanged();
 		   }
 	   };
-	  
+	
 	class OAdapter extends BaseAdapter {
 		private Context context;
 		private LayoutInflater layoutInflater; 
@@ -99,8 +99,8 @@ public class Z_Organization extends Activity {
 		@Override
 		public int getCount()
 		{
-			Log.d("Z_Organization-GetCount","OJsonArray.Length= "+OJsonArray.length());
-			return OJsonArray.length();
+			Log.d("ZOrcAct","OJsonArray.Length= "+OActArray.length());
+			return OActArray.length();
 		}
 
 		@Override
@@ -126,10 +126,10 @@ public class Z_Organization extends Activity {
 				Log.d("Organization-getView","NO convertView,So Creat One");
 			}
 			try {
-				OrgClass OrgInfo=new OrgClass(OJsonArray.getJSONObject(position));
-				OrgIntro.OrgNameTXT.setText(OrgInfo.GetName());
-				OrgIntro.OrgIntroTXT.setText(OrgInfo.GetContent());
-				new LoadImg(OrgIntro.OrgLogo).execute(OrgInfo.GetLogoURL());
+				ActivityClass AInfo=new ActivityClass(OActArray.getJSONObject(position));
+				OrgIntro.OrgNameTXT.setText(AInfo.GetTitle());
+				OrgIntro.OrgIntroTXT.setText(AInfo.GetBeginTime());
+				new LoadImg(OrgIntro.OrgLogo).execute(AInfo.GetLogoURL());
 			} catch (JSONException e) {
 				Log.e("Organization-getView",e.toString());
 				e.printStackTrace();
@@ -138,5 +138,4 @@ public class Z_Organization extends Activity {
 		}
 		
 	};
-	   
 }
