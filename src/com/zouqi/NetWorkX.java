@@ -9,7 +9,6 @@
 *	Result_JsonType:(JsonType Type) JsonType.JObject,JsonType.JArray,JsonType.JString
 ************************************************************************************/
 
-
 package com.zouqi;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
