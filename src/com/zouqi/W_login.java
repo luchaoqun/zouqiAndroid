@@ -57,13 +57,8 @@ public class W_login extends Activity {
 				StringBuffer strjson= new StringBuffer();
 				strjson.append("{\"user\":{\"email\": \""+str1+"\",\"password\": \""+str2+"\"}}");
 				System.out.println(strjson);
-				try {
-					aacc=(JSONObject) new NetWorkX("/users/sign_in",HTTPMethod.POST, strjson.toString(), DataChanged).execute(JsonType.JObject).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
+				//aacc=(JSONObject) new NetWorkX("/users/sign_in",HTTPMethod.POST, strjson.toString(), DataChanged).execute(JsonType.JObject).get();
+				new NetWorkX("/users/sign_in",HTTPMethod.POST, strjson.toString(), DataChanged).execute(JsonType.JObject);
 			}
 		});
 	}
