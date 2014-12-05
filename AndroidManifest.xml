@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".W_login"
-            android:label="@string/title_activity_w_buildactivity">
+            android:label="@string/title_activity_w_buildactivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,6 +71,14 @@
         <activity
             android:name=".Z_OrgDetail"
             android:label="@string/title_activity_z__org_detail" >
+        </activity>
+        <activity
+            android:name=".L_comments"
+            android:label="@string/title_activity_l_comments" >
+        </activity>
+        <activity
+            android:name=".L_publish_comment"
+            android:label="@string/title_activity_l_publish_comment" >
         </activity>
     </application>
 
