@@ -3,13 +3,14 @@ package com.zouqi;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.zouqi.NetWorkX.HTTPMethod;
 import com.zouqi.NetWorkX.JsonType;
-import com.zouqi.W_buildactivity.myadapter;
+
 
 import android.app.Activity;
 import android.content.Context;

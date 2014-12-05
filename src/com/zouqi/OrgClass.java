@@ -3,6 +3,8 @@ package com.zouqi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class OrgClass {
 	private Integer Id;
 	private String Name;
@@ -13,15 +15,21 @@ public class OrgClass {
 	private Integer Shipid;
 	private Integer PeopleNumber;
 	
-	OrgClass(JSONObject OrgJData) throws JSONException{
+	OrgClass(JSONObject OrgJData) throws JSONException {
 		LogoURL=OrgJData.getString("organization_logo");
 		Id=OrgJData.getInt("id");
 		Name=OrgJData.getString("organization_name");
 		Content=OrgJData.getString("organization_content");
 		SchoolName=OrgJData.getString("school_name");
 		SchoolId=OrgJData.getInt("school_id");
-		Shipid=OrgJData.getInt("ship_id");
 		PeopleNumber=OrgJData.getInt("organization_people_number");
+		try{
+			Shipid=OrgJData.getInt("ship_id");
+		}
+		catch (JSONException e){
+			Log.w("OrgClass","ShipId is null,defualt 0");
+			Shipid=0;
+		};
 	}
 	
 	public void SetShipId(Integer NewShipId){

@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zouqi.Z_OrgSearchList" >
+
+    <SearchView
+        android:id="@+id/zorgsearch_searchview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+    </SearchView>
+
+    <ListView
+        android:id="@+id/zorgsearch_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/zorgsearch_searchview"
+        android:layout_centerHorizontal="true" >
+    </ListView>
+
+</RelativeLayout>

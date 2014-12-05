@@ -1,14 +1,14 @@
 /**********************************************************************************
 * Usage:
-* 	[JSONObject/JSONArray/String] eg_varible=new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Runnable]).execute([Result_JsonType]);
+* 	NneWorkX eg_varible=new NetWorkX([RequetsPath],[POSTMethod],[PostContent],[Runnable]);
+*	eg_varible.execute();
+*
 *	
 *	ReuqsetPath:(String Type)  Like "/user.sign" ,"/activities.json",etc...
 *	PostMethod:(HttpMethod Type)  HttpMethod.GET,HttpMethod.POST,HttpMethod.UPDATE,HttpMethod.DELETE.
 *	PostContent:(String Type) The POST Content write here.If you GET,give this parameter (null).
 *	Runnable:(Runnable Type) When the process has done,the next Runnable Function.
-*	Result_JsonType:(JsonType Type) JsonType.JObject,JsonType.JArray,JsonType.JString
 ************************************************************************************/
-
 
 package com.zouqi;
 import java.io.BufferedReader;
@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
 public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	
 	public static enum JsonType{
@@ -40,23 +39,25 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	private HTTPMethod TheHttpMethod=null;
 	private String ThePostData=null;
 	private String JData=null;
-	private Object ResultData=null;
-	private Runnable NextFunction=null;
+	private NetWorkInterface TheComponents;
 	
-	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,Runnable OnSuccess){
-		TheUrl=URLPrefix+RequestPath;
-		TheHttpMethod=Method;
-		ThePostData=PostData;
-		ResultData=new Object();
-		NextFunction=OnSuccess;
+	public interface NetWorkInterface{
+		void ChangeForNewResult(Object Result);
+	}
+	
+	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,NetWorkInterface Components){
+		SetPath(RequestPath);
+		SetHttpMethod(Method);
+		SetPostData(PostData);
+		TheComponents=Components;
 	}
 	
 	public void ConnectX() throws IOException, JSONException{
-	
 		StringBuilder response =new StringBuilder();
 		Log.d("NetWork Debug Message","Url is "+TheUrl);
 		URL url=new URL(TheUrl);
 		HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
+		//httpconn.setConnectTimeout(1000);
 		String TmpMethod=null;
 		switch (TheHttpMethod){
 			case GET:
@@ -110,45 +111,56 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 			Log.w("NetWorkX-ConnectX",e.toString());
 			e.printStackTrace();
 		}
-		JsonType JType=(JsonType) params[0];
-		if(JType==JsonType.JObject){
-			try {
-				ResultData=new JSONObject(JData);
-			} catch (JSONException e) {
-				Log.e("NetWorkX-doInbackGround","Catch JSONException");
-				try {
-					ResultData=new JSONObject("{\"error\":\"JSONException,Maybe get null JSON Data\"}");
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}
-		else if(JType==JsonType.JArray){
-			try {
-				ResultData=new JSONArray(JData);
-			} catch (JSONException e) {
-				Log.e("NetWorkX-doInbackGround","Catch JSONException");
-				e.printStackTrace();
-			}
-		}
-		else{
-			ResultData=new String(JData);
-		}
-		Log.d("NetWorkX","Receive Json Data OK,Result is"+ResultData.toString());
-		return ResultData;
+		Log.d("NetWorkX","Receive Json Data OK,Result is"+JData.toString());
+		return JData;
 	}
 	
 	@Override
 	protected void onPostExecute(Object result){
 		if(result!=null){
 			Log.d("NetWorkX","Receive Finished");
-			NextFunction.run();
+			TheComponents.ChangeForNewResult(result);
 		}
 		else
 		{
 			Log.e("NetWorkX","Receive Blank Data!May be Error!!");
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * SetFunction
+	 */
+	public void SetPath(String NewPath){
+		TheUrl=URLPrefix+NewPath;
+	}
+	
+	public void SetHttpMethod(HTTPMethod NewMethod){
+		TheHttpMethod=NewMethod;
+	}
+	
+	public void SetPostData(String NewData){
+		ThePostData=NewData;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * GetFunction
+	 * 
+	 */
+	public JSONObject getJSONObject() throws JSONException{
+		return new JSONObject(JData);
+	}
+	
+	public JSONArray getJSONArray() throws JSONException{
+		return new JSONArray(JData);
+	}
+	
+	public String getString(){
+		return new String(JData);
 	}
 	
 }

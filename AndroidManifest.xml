@@ -29,7 +29,7 @@
             android:label="@string/title_activity_z__organization" >
         </activity>
         <activity
-            android:name=".W_buildactivity"
+            android:name=".W_register"
             android:label="@string/app_name" >
         </activity>
         <activity
@@ -37,7 +37,7 @@
             android:label="走你" >
         </activity>
         <activity
-            android:name=".W_personal"
+            android:name=".W_buildactivityscroll"
             android:label="@string/title_activity_personal" >
         </activity>
         <activity
@@ -61,10 +61,6 @@
             android:label="@string/title_activity_l_tab_person" >
         </activity>
         <activity
-            android:name=".W_register"
-            android:label="@string/title_activity_w_register" >
-        </activity>
-        <activity
             android:name=".L_activity_detail"
             android:label="@string/title_activity_l_activity_detail" >
         </activity>
@@ -79,6 +75,22 @@
         <activity
             android:name=".L_publish_comment"
             android:label="@string/title_activity_l_publish_comment" >
+         </activity>
+		<activity
+            android:name=".Z_OrgSearchList"
+            android:label="@string/title_activity_z__org_search_list" >
+        </activity>
+        <activity
+            android:name=".Z_OrgAct"
+            android:label="@string/title_activity_z__org" >
+         </activity>
+        <activity
+            android:name=".W_Test"
+            android:label="@string/title_activity_w__test" >
+        </activity>
+        <activity
+            android:name=".W_personal"
+            android:label="@string/title_activity_w_buildactivity">
         </activity>
     </application>
 
