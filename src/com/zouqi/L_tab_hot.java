@@ -1,19 +1,10 @@
 package com.zouqi;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.zouqi.NetWorkX.HTTPMethod;
 import com.zouqi.NetWorkX.JsonType;
-import com.zouqi.Z_Organization.OAdapter;
-import com.zouqi.Z_Organization.OAdapter.OrgIntroClass;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,8 +28,8 @@ public class L_tab_hot extends Activity {
 
 	JSONArray hotjson=null;
 	JSONObject activity=null;
-	HotAdapter hapt;
-	String token="sdNr-dpcpsqSczLKMz1r" ;
+	ActAdapterX hapt;
+	String token;
 	ListView listview=null;
 	
 	Runnable DataChanged=new Runnable(){
@@ -56,11 +47,11 @@ public class L_tab_hot extends Activity {
 		Log.v("L_tab_hot","on Create");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_l_tab_hot);
-		/*SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
-		token=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");*/
+		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
+		token=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
 		hotjson = new JSONArray();
 		listview=(ListView)findViewById(R.id.l_hot_list);
-		hapt=new HotAdapter(this);
+		hapt=new ActAdapterX(this);
 		listview.setAdapter(hapt);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,7 +59,7 @@ public class L_tab_hot extends Activity {
                                     int position, long id) {
                 Intent NextIntent = new Intent(L_tab_hot.this, L_activity_detail.class);
                 try {
-                    NextIntent.putExtra("Hid", hotjson.getJSONObject(position).getString("id"));
+                    NextIntent.putExtra("Aid", hotjson.getJSONObject(position).getString("id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,13 +73,7 @@ public class L_tab_hot extends Activity {
 		super.onResume();
 		Log.v("L_tab_hot","onresume");
 		String RequestURL="/activities.json?user_token="+token;
-		try {
-			hotjson=(JSONArray) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JArray).get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+		new NetWorkX(RequestURL,HTTPMethod.GET,null,hapt).execute();
 	}
 	
 	@Override
@@ -107,68 +92,68 @@ public class L_tab_hot extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	//适配器
-	class HotAdapter extends BaseAdapter {
-		private Context context;
-		private LayoutInflater layoutInflater; 
-		public HotActClass hotact;
-		class HotActClass{
-			ImageView actLogo;
-			TextView actName;
-			TextView actTime;
-			TextView actLocate;
-		};
-		public HotAdapter(Context context) {
-		    this.context = context;
-	        this.layoutInflater = LayoutInflater.from(this.context);  
-		}
-
-		@Override
-		public int getCount()
-		{
-			Log.d("Z_Organization-GetCount`","OJsonArray.Length= "+hotjson.length());
-			return hotjson.length();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null)
-			{
-				convertView = layoutInflater.inflate(R.layout.l_tab_listview_item, null);
-				hotact=new HotActClass();
-				hotact.actLogo=(ImageView)convertView.findViewById(R.id.actlogo);
-				hotact.actName=(TextView)convertView.findViewById(R.id.actname);
-				hotact.actTime=(TextView)convertView.findViewById(R.id.hot_time_text);
-				hotact.actLocate=(TextView)convertView.findViewById(R.id.hot_locate_text);
-				convertView.setTag(hotact);
-			}
-			try {
-				activity = hotjson.getJSONObject(position);
-				hotact.actName.setText(activity.getString("activity_title"));
-				hotact.actTime.setText(activity.getString("activity_begin_time"));
-				hotact.actLocate.setText(activity.getString("activity_place"));
-				new LoadImg(hotact.actLogo).execute(activity.getString("activity_logo"));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			return convertView;
-		}
-		
-	};
+//	class HotAdapter extends BaseAdapter {
+//		private Context context;
+//		private LayoutInflater layoutInflater; 
+//		public HotActClass hotact;
+//		class HotActClass{
+//			ImageView actLogo;
+//			TextView actName;
+//			TextView actTime;
+//			TextView actLocate;
+//		};
+//		public HotAdapter(Context context) {
+//		    this.context = context;
+//	        this.layoutInflater = LayoutInflater.from(this.context);  
+//		}
+//
+//		@Override
+//		public int getCount()
+//		{
+//			Log.d("Z_Organization-GetCount`","OJsonArray.Length= "+hotjson.length());
+//			return hotjson.length();
+//		}
+//
+//		@Override
+//		public Object getItem(int position) {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
+//
+//		@Override
+//		public long getItemId(int position) {
+//			// TODO Auto-generated method stub
+//			return position;
+//		}
+//
+//		@Override
+//		public View getView(int position, View convertView, ViewGroup parent) {
+//			if(convertView==null)
+//			{
+//				convertView = layoutInflater.inflate(R.layout.l_tab_listview_item, null);
+//				hotact=new HotActClass();
+//				hotact.actLogo=(ImageView)convertView.findViewById(R.id.actlogo);
+//				hotact.actName=(TextView)convertView.findViewById(R.id.actname);
+//				hotact.actTime=(TextView)convertView.findViewById(R.id.hot_time_text);
+//				hotact.actLocate=(TextView)convertView.findViewById(R.id.hot_locate_text);
+//				convertView.setTag(hotact);
+//			}
+//			try {
+//				activity = hotjson.getJSONObject(position);
+//				hotact.actName.setText(activity.getString("activity_title"));
+//				hotact.actTime.setText(activity.getString("activity_begin_time"));
+//				hotact.actLocate.setText(activity.getString("activity_place"));
+//				new LoadImg(hotact.actLogo).execute(activity.getString("activity_logo"));
+//			} catch (JSONException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			
+//			return convertView;
+//		}
+//		
+//	};
 	
 	
 }
