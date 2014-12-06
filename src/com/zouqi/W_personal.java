@@ -58,24 +58,15 @@ public class W_personal extends Activity {
 	protected void onResume() {
 		super.onResume();
 		String RequestURL="/users/"+UserID+".json?user_token="+UserToken;
-		try {
-			total=(JSONObject) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JObject).get();
-			registermeg=total.getJSONObject("user").getJSONArray("myactivity");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		new NetWorkX(RequestURL,HTTPMethod.GET,null,listAdapter).execute();
 	}
-	public Runnable DataChanged=new Runnable(){
-		   public void run(){
-			   Log.d("regmessage","Result is "+total.toString());
-			   listAdapter.notifyDataSetChanged();
-		   }
-	   };
-		class myAdapter extends BaseAdapter{
+//	public Runnable DataChanged=new Runnable(){
+//		   public void run(){
+//			   Log.d("regmessage","Result is "+total.toString());
+//			   listAdapter.notifyDataSetChanged();
+//		   }
+//	   };
+		class myAdapter extends AdapterX{
 		Context mContext;
 		LayoutInflater inflater;
 		final int VIEW_TYPE = 2;
@@ -256,6 +247,19 @@ public class W_personal extends Activity {
 			    	break;
 			    }*/
 				return convertView;
+			}
+			@Override
+			public void ChangeForNewResult(Object Result) {
+				 Log.d("regmessage","Result is "+total.toString());
+				 total=(JSONObject)Result;
+				 try {
+					registermeg=total.getJSONObject("user").getJSONArray("myactivity");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 this.notifyDataSetChanged();
+				
 			}
       }
 	/*	OrgIntroJ = OJsonArray.getJSONObject(position);

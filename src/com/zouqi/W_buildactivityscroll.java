@@ -29,8 +29,9 @@ import android.widget.ImageView;
 
 import com.zouqi.NetWorkX.HTTPMethod;
 import com.zouqi.NetWorkX.JsonType;
+import com.zouqi.NetWorkX.NetWorkInterface;
 
-public class W_buildactivityscroll extends Activity {
+public class W_buildactivityscroll extends Activity implements NetWorkInterface{
 	 public static final String IMAGE_UNSPECIFIED = "image/*";
 	 public final static int PHOTO_ZOOM = 0;
 	 public final static int PHOTO_RESULT = 2;
@@ -49,6 +50,7 @@ public class W_buildactivityscroll extends Activity {
 	 String bigroad=null;
 	 String UserToken;
 	 String UserID;
+	 UpLoadImg bigpic,smallpic;
 	 Runnable success=new  Runnable() {
 		@Override
 		public void run() {}
@@ -131,56 +133,10 @@ public class W_buildactivityscroll extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				  logopoststr="{\"picture\":{\"picdata\":\""+base64small+"\"}}";
-				  picpoststr="{\"picture\":{\"picdata\":\""+base64big+"\"}}";
-				  Log.e("xiaotu",logopoststr.toString());
-				  Log.e("datu",picpoststr.toString());
-				  try {
-					jsonxiaotu=(JSONObject) new NetWorkX("/pictures.json", HTTPMethod.POST, logopoststr.toString(), success).execute(JsonType.JObject).get();
-					jsondatu=(JSONObject) new NetWorkX("/pictures.json", HTTPMethod.POST, picpoststr.toString(), success).execute(JsonType.JObject).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-				
-			try {
-				smallroad=jsonxiaotu.getJSONObject("picture").getString("url");
-				Log.e("smallroad", smallroad);
-				bigroad=jsondatu.getJSONObject("picture").getString("url");
-				Log.e("bigroad", bigroad);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			 }
-			     EditText  text1=(EditText)findViewById(R.id.W_editactivityname);
-		         EditText  text2=(EditText)findViewById(R.id.W_buildactivityeditlocation);
-		         EditText  text3=(EditText)findViewById(R.id.W_editbuildactivitytime);
-		         EditText  text4=(EditText)findViewById(R.id.W_editbuildactivityendtime);
-		         EditText  text5=(EditText)findViewById(R.id.W_buildactivity_editmaxpeople);
-		         EditText  text6=(EditText)findViewById(R.id.W_buildactivityeditteam);
-		         EditText  text7=(EditText)findViewById(R.id.W_buildactivityeditintroduce);
-			     String str1=text1.getText().toString();
-			     String str2=text2.getText().toString();
-			     String str3=text3.getText().toString();
-			     String str4=text4.getText().toString();
-			     String str5=text5.getText().toString();
-			     String str6=text6.getText().toString();
-			     String str7=text7.getText().toString();
-			     int max=Integer.parseInt(str5);
-			     totalstr="{\"activity\":{\"activity_title\":\""+str1+"\",\"activity_content\":\""+str7+"\",\"activity_place\":\""+str2+"\",\"activity_logo\":\""+smallroad+"\",\"activity_pic\":\""+
-			     bigroad+"\",\"activity_place_lat\":2.0,\"activity_place_lon\":2.0,\"activity_people_max\":"+max+",\"activity_begin_time\":\""+str3+"\",\"activity_end_time\":\""+str4+"\"}}";
-			     Log.e("totalstr", totalstr);
-			     //String totalfinal=URLEncoder.encode(totalstr, "utf-8");
-		       	 try {
-		       	   String totalfinal=URLEncoder.encode(totalstr, "utf-8");
-					total=(JSONObject)new NetWorkX("/activities.json?user_token="+UserToken, HTTPMethod.POST, totalstr, totalsuccess).execute(JsonType.JObject).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
+				logopoststr="{\"picture\":{\"picdata\":\""+base64small+"\"}}";
+				Log.e("xiaotu",logopoststr.toString());
+				smallpic=new UpLoadImg(false);
+				new NetWorkX("/pictures.json", HTTPMethod.POST, logopoststr.toString(), smallpic).execute();				
 			}
 		});
 	}
@@ -267,5 +223,74 @@ public  String imagechange(Bitmap photo){    //将图片转换为base64
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	@Override
+	public void ChangeForNewResult(Object Result) {
+		Intent personal=new Intent();
+		personal.setClass(W_buildactivityscroll.this, W_personal.class);
+		startActivity(personal);
+	}
+	
+	class UpLoadImg implements NetWorkInterface{
+		boolean BigPic;
+		UpLoadImg(boolean isBigpic){
+			BigPic=isBigpic;
+		}
+		@Override
+		public void ChangeForNewResult(Object Result) {
+			if(BigPic){
+				jsondatu=(JSONObject) Result;
+				try {
+					bigroad=jsondatu.getJSONObject("picture").getString("url");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Log.e("bigroad", bigroad);
+				
+				
+				EditText  text1=(EditText)findViewById(R.id.W_editactivityname);
+		         EditText  text2=(EditText)findViewById(R.id.W_buildactivityeditlocation);
+		         EditText  text3=(EditText)findViewById(R.id.W_editbuildactivitytime);
+		         EditText  text4=(EditText)findViewById(R.id.W_editbuildactivityendtime);
+		         EditText  text5=(EditText)findViewById(R.id.W_buildactivity_editmaxpeople);
+		         EditText  text6=(EditText)findViewById(R.id.W_buildactivityeditteam);
+		         EditText  text7=(EditText)findViewById(R.id.W_buildactivityeditintroduce);
+			     String str1=text1.getText().toString();
+			     String str2=text2.getText().toString();
+			     String str3=text3.getText().toString();
+			     String str4=text4.getText().toString();
+			     String str5=text5.getText().toString();
+			     String str6=text6.getText().toString();
+			     String str7=text7.getText().toString();
+			     int max=Integer.parseInt(str5);
+			     totalstr="{\"activity\":{\"activity_title\":\""+str1+"\",\"activity_content\":\""+str7+"\",\"activity_place\":\""+str2+"\",\"activity_logo\":\""+smallroad+"\",\"activity_pic\":\""+
+			     bigroad+"\",\"activity_place_lat\":2.0,\"activity_place_lon\":2.0,\"activity_people_max\":"+max+",\"activity_begin_time\":\""+str3+"\",\"activity_end_time\":\""+str4+"\"}}";
+			     Log.e("totalstr", totalstr);
+			     //String totalfinal=URLEncoder.encode(totalstr, "utf-8");
+		       	   try {
+					String totalfinal=URLEncoder.encode(totalstr, "utf-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				new NetWorkX("/activities.json?user_token="+UserToken, HTTPMethod.POST, totalstr, W_buildactivityscroll.this).execute();
+				}
+			}
+			else{
+				jsonxiaotu=(JSONObject) Result;
+				try {
+					smallroad=jsonxiaotu.getJSONObject("picture").getString("url");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Log.e("smallroad", smallroad);
+				picpoststr="{\"picture\":{\"picdata\":\""+base64big+"\"}}";
+				Log.e("datu",picpoststr.toString());
+				bigpic=new UpLoadImg(true);
+				new NetWorkX("/pictures.json", HTTPMethod.POST, picpoststr.toString(),bigpic).execute();
+			}
+		}
+		
 	}
 }
