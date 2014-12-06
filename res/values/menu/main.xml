@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.zouqi.MainActivity" >
+    <item android:id="@+id/testttt" android:visible="true" android:showAsAction="always" android:enabled="true" android:title="@string/title_activity_camera"></item>
+
+</menu>
