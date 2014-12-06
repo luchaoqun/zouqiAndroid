@@ -14,43 +14,43 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zouqi.NetWorkX.NetWorkInterface;
-import com.zouqi.OrgAdapterX.OrgIntroClass;
 
 public class ActAdapterX extends AdapterX implements NetWorkInterface{
 	
 	private Context context;
 	private LayoutInflater layoutInflater; 
-	private JSONArray OrgList;
+	private JSONArray ActList;
 	
 	
-	public OrgIntroClass OrgIntro;
+	public ActIntroClass ActIntro;
 	
 	
-	class OrgIntroClass{
-		ImageView OrgLogo;
-		TextView OrgNameTXT;
-		TextView OrgIntroTXT;
+	class ActIntroClass{
+		ImageView ActLogo;
+		TextView ActNameTXT;
+		TextView ActPlaceTXT;
+		TextView ActTimeTXT;
 	};
 	
-	public OrgAdapterX(Context context) {
+	public ActAdapterX(Context context) {
 	    this.context = context;
         this.layoutInflater = LayoutInflater.from(this.context);  
-        this.OrgList=new JSONArray();
+        this.ActList=new JSONArray();
 	}
 	
 	
 	@Override
 	public int getCount()
 	{
-		Log.d("OrgAdapter","OJsonArray.Length= "+OrgList.length());
-		return OrgList.length();
+		Log.d("OrgAdapter","OJsonArray.Length= "+ActList.length());
+		return ActList.length();
 	}
 
 	@Override
 	public JSONObject getItem(int position) {
 		JSONObject Tmp = null;
 		try {
-			Tmp=OrgList.getJSONObject(position);
+			Tmp=ActList.getJSONObject(position);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,18 +68,20 @@ public class ActAdapterX extends AdapterX implements NetWorkInterface{
 		if(convertView==null)
 		{
 			convertView = layoutInflater.inflate(R.layout.z_org_cell, null);
-			OrgIntro=new OrgIntroClass();
-			OrgIntro.OrgLogo=(ImageView)convertView.findViewById(R.id.zorg_pic);
-			OrgIntro.OrgNameTXT=(TextView)convertView.findViewById(R.id.zorg_name);
-			OrgIntro.OrgIntroTXT=(TextView)convertView.findViewById(R.id.zorg_intro);
-			convertView.setTag(OrgIntro);
-			Log.d("Organization-getView","NO convertView,So Creat One");
+			ActIntro=new ActIntroClass();
+			ActIntro.ActLogo=(ImageView)convertView.findViewById(R.id.actlogo);
+			ActIntro.ActNameTXT=(TextView)convertView.findViewById(R.id.actname);
+			ActIntro.ActPlaceTXT=(TextView)convertView.findViewById(R.id.hot_locate);
+			ActIntro.ActTimeTXT=(TextView)convertView.findViewById(R.id.hot_time_text);
+			convertView.setTag(ActIntro);
+			Log.d("ActAdapter","NO convertView,So Creat One");
 		}
 		try {
-			OrgClass OrgInfo=new OrgClass(OrgList.getJSONObject(position));
-			OrgIntro.OrgNameTXT.setText(OrgInfo.GetName());
-			OrgIntro.OrgIntroTXT.setText(OrgInfo.GetContent());
-			new LoadImg(OrgIntro.OrgLogo).execute(OrgInfo.GetLogoURL());
+			ActivityClass ActInfo=new ActivityClass(ActList.getJSONObject(position));
+			ActIntro.ActNameTXT.setText(ActInfo.GetTitle());
+			ActIntro.ActPlaceTXT.setText(ActInfo.GetPlace());
+			ActIntro.ActTimeTXT.setText(ActInfo.GetBeginTime());
+			new LoadImg(ActIntro.ActLogo).execute(ActInfo.GetLogoURL());
 		} catch (JSONException e) {
 			Log.e("Organization-getView",e.toString());
 			e.printStackTrace();
@@ -90,7 +92,7 @@ public class ActAdapterX extends AdapterX implements NetWorkInterface{
 	@Override
 	public void ChangeForNewResult(Object Result) {
 		Log.d("NewResult",Result.toString());
-		OrgList=(JSONArray) Result;
+		ActList=(JSONArray) Result;
 		this.notifyDataSetChanged();
 	}
 	

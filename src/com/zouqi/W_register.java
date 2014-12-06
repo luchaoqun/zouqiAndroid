@@ -1,7 +1,6 @@
 package com.zouqi;
 
 import java.io.ByteArrayOutputStream;
-import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,49 +20,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.zouqi.NetWorkX.HTTPMethod;
-import com.zouqi.NetWorkX.JsonType;
+import com.zouqi.NetWorkX.NetWorkInterface;
 
-public class W_register extends Activity {
+public class W_register extends Activity implements NetWorkInterface{
 	public static final int CAMERA_REQUEST = 1888; 
 	public Bitmap photo;
 	StringBuffer registerimage=new StringBuffer();
 	StringBuffer registerjson=new StringBuffer();
 	JSONObject image;
 	String imagecontent = null;
+	Imgpostsuccess imgpostsuccess;
 	final W_reg_postmessage  me = null;
 	    public String str1;
 	    public String str2;
 	    public String str3;
 	    public String str4;
 	    public String str5;
-	Runnable imgpostsuccess=new Runnable(){   //图片post完成后post注册信息
-		public void run(){
-			try {
-				imagecontent = image.getJSONObject("picture").getString("url");
-				Log.e("image",imagecontent );
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
-			registerjson.append(" {\"user\":{\"password\":\""+str2+"\",\"password_confirmation\":\""+str3+"\",\"school_id\":1,\"student_id\":"+str4+",\"student_pwd\":\""+str5+"\",\"user_logo\":\""+imagecontent+"\",\"email\":\""+str1+"\"}}");
-			Log.e("registerjson", registerjson.toString());
-			try {
-				JSONObject messg=(JSONObject)new NetWorkX("/users.json", HTTPMethod.POST,registerjson.toString(), totalpossuccess).execute(JsonType.JObject).get();
-				Log.d("registerjson",registerjson.toString());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
-	};
-	Runnable totalpossuccess=new Runnable() {
-		@Override
-		public void run() {
-			Intent a=new Intent();
-			a.setClass(W_register.this,W_login.class);
-			startActivity(a);
-		}
-	};
+	
+	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,13 +59,7 @@ public class W_register extends Activity {
 				String base64image=imagechange(photo);
 				registerimage.append("{\"picture\":{\"picdata\":\""+base64image+"\"}}");
 				Log.e("imagejson", registerimage.toString());
-				try {
-					image = (JSONObject)new NetWorkX("/pictures.json", HTTPMethod.POST, registerimage.toString(), imgpostsuccess).execute(JsonType.JObject).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} 
+				new NetWorkX("/pictures.json", HTTPMethod.POST, registerimage.toString(), imgpostsuccess).execute();
 			}
 		});
 		ImageButton ibtn=(ImageButton)findViewById(R.id.W_reg_useriamgephoto);
@@ -139,4 +107,28 @@ public class W_register extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	@Override
+	public void ChangeForNewResult(Object Result) {
+		Intent a=new Intent();
+		a.setClass(W_register.this,W_login.class);
+		startActivity(a);
+	}
+	
+	class Imgpostsuccess implements NetWorkInterface{
+
+		@Override
+		public void ChangeForNewResult(Object Result) {
+			try {
+				image=(JSONObject) Result;
+				imagecontent = image.getJSONObject("picture").getString("url");
+				Log.e("image",imagecontent );
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			registerjson.append(" {\"user\":{\"password\":\""+str2+"\",\"password_confirmation\":\""+str3+"\",\"school_id\":1,\"student_id\":"+str4+",\"student_pwd\":\""+str5+"\",\"user_logo\":\""+imagecontent+"\",\"email\":\""+str1+"\"}}");
+			Log.e("registerjson", registerjson.toString());
+			new NetWorkX("/users.json", HTTPMethod.POST,registerjson.toString(),this).execute();
+		}
+			
+		};
 }

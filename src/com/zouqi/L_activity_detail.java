@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.zouqi.NetWorkX.HTTPMethod;
 import com.zouqi.NetWorkX.JsonType;
+import com.zouqi.NetWorkX.NetWorkInterface;
 
 
 import android.app.Activity;
@@ -29,7 +30,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class L_activity_detail extends Activity {
+public class L_activity_detail extends Activity implements NetWorkInterface{
 
 	public String ActId;
 	private  JSONObject json_detail=new JSONObject();
@@ -58,7 +59,7 @@ public class L_activity_detail extends Activity {
 		super.onResume();
 		String RequestURL="/activities/"+ActId+".json?user_token="+UserToken;
 		try {
-			json_detail=(JSONObject) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JObject).get();
+			new NetWorkX(RequestURL,HTTPMethod.GET,null,this).execute();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
@@ -256,5 +257,10 @@ public class L_activity_detail extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	@Override
+	public void ChangeForNewResult(Object Result) {
+		// TODO Auto-generated method stub
+		
 	}
 }
