@@ -32,15 +32,6 @@ public class L_tab_hot extends Activity {
 	String token;
 	ListView listview=null;
 	
-	Runnable DataChanged=new Runnable(){
-
-		@Override
-		public void run() {
-			System.out.println("networkx get success!");
-			hapt.notifyDataSetChanged();
-		}
-		
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
