@@ -26,6 +26,12 @@ public class OrgAdapterX extends AdapterX {
 			ImageView OrgLogo;
 			TextView OrgNameTXT;
 			TextView OrgIntroTXT;
+			
+			public void setView(OrgClass NewOrg){
+				this.OrgNameTXT.setText(NewOrg.GetName());
+				this.OrgIntroTXT.setText(NewOrg.GetContent());
+				new LoadImg(this.OrgLogo).execute(NewOrg.GetLogoURL());
+			}
 		};
 		
 		public OrgAdapterX(Context context) {
@@ -73,9 +79,7 @@ public class OrgAdapterX extends AdapterX {
 			}
 			try {
 				OrgClass OrgInfo=new OrgClass(OrgList.getJSONObject(position));
-				OrgIntro.OrgNameTXT.setText(OrgInfo.GetName());
-				OrgIntro.OrgIntroTXT.setText(OrgInfo.GetContent());
-				new LoadImg(OrgIntro.OrgLogo).execute(OrgInfo.GetLogoURL());
+				OrgIntro.setView(OrgInfo);
 			} catch (JSONException e) {
 				Log.e("Organization-getView",e.toString());
 				e.printStackTrace();
