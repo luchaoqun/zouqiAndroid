@@ -56,12 +56,6 @@ public class L_comments extends Activity {
 		String RequestURL="/activities/"+actId+"/comments.json?user_token="+token;
 		new NetWorkX(RequestURL,HTTPMethod.GET,null,capt).execute();
 	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.l_comments, menu);
-		return true;
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

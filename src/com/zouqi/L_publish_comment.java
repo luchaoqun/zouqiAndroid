@@ -13,12 +13,6 @@ public class L_publish_comment extends Activity {
 		setContentView(R.layout.activity_l_publish_comment);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.l_publish_comment, menu);
-		return true;
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

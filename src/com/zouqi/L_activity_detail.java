@@ -35,9 +35,7 @@ public class L_activity_detail extends Activity{
 	public String ActId;
 	private  JSONObject json_detail=new JSONObject();
 	 private JSONArray comments=new JSONArray();
-	 private ArrayList listString;
 	 private ActDetailAdapterX dapt;
-	 private String  actID="1";
 	 private String UserToken=null;
 	 
 	@Override
