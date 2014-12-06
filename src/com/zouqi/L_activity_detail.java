@@ -30,13 +30,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class L_activity_detail extends Activity implements NetWorkInterface{
+public class L_activity_detail extends Activity{
 
 	public String ActId;
 	private  JSONObject json_detail=new JSONObject();
 	 private JSONArray comments=new JSONArray();
 	 private ArrayList listString;
-	 private myadapter listAdapter;
+	 private ActDetailAdapterX dapt;
 	 private String  actID="1";
 	 private String UserToken=null;
 	 
@@ -50,29 +50,18 @@ public class L_activity_detail extends Activity implements NetWorkInterface{
 		Intent ExtraParams=getIntent();
 		ActId=ExtraParams.getStringExtra("Aid");
 		ListView lv_ad=(ListView)findViewById(R.id.L_activity_detail_listview);
-		listAdapter = new myadapter(this);
-		   lv_ad.setAdapter(listAdapter);
+		dapt = new ActDetailAdapterX(this);
+		   lv_ad.setAdapter(dapt);
 		   
 			
 	}
 	protected void onResume() {
 		super.onResume();
 		String RequestURL="/activities/"+ActId+".json?user_token="+UserToken;
-		try {
-			new NetWorkX(RequestURL,HTTPMethod.GET,null,this).execute();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+		new  NetWorkX(RequestURL,HTTPMethod.GET,null,dapt).execute();
 	}
-	public Runnable DataChanged=new Runnable(){
-		   public void run(){
-			   Log.d("regmessage","Result is "+json_detail.toString());
-			   listAdapter.notifyDataSetChanged();
-		   }
-	   };
-	class myadapter extends BaseAdapter{
+
+/*	class myadapter extends BaseAdapter{
 		Context mContext;
 		LayoutInflater inflater_w;
 		final int TYPE_1 = 0;
@@ -169,7 +158,7 @@ public class L_activity_detail extends Activity implements NetWorkInterface{
 		    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment, parent,false);
 
 		    		break;
-		    	/*case TYPE_5:
+		    	case TYPE_5:
 		    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment1, parent,false);
 		    		break;
 		    	case TYPE_6:
@@ -180,7 +169,7 @@ public class L_activity_detail extends Activity implements NetWorkInterface{
 		    		break;
 		    	case TYPE_8:
 		    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment_more,parent,false);
-				    break;*/
+				    break;
 				default:
 					convertView=inflater_w.inflate(R.layout.l_activity_detail_comment1, parent,false);
 					actCom=new ActCom();
@@ -224,8 +213,8 @@ public class L_activity_detail extends Activity implements NetWorkInterface{
 			    
 				return convertView;
 			}
-      }
-	class itemlistener implements OnClickListener{
+      }*/
+	/*class itemlistener implements OnClickListener{
 		
 		private int w_position;
 		public itemlistener(int pos){
@@ -262,5 +251,5 @@ public class L_activity_detail extends Activity implements NetWorkInterface{
 	public void ChangeForNewResult(Object Result) {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 }

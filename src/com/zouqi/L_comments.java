@@ -26,21 +26,13 @@ import android.widget.TextView;
 
 public class L_comments extends Activity {
 
-	JSONArray json_com=new JSONArray();
-	JSONObject comment=new JSONObject();
-	ComAdapter capt;
-	String token="sdNr-dpcpsqSczLKMz1r" ;
+	JSONArray json_com=null;
+	JSONObject comment=null;
+	ActAdapterX capt;
+	String token;
 	String actId=null;
 	ListView listview=null;
 
-	Runnable DataChanged=new Runnable(){
-
-		@Override
-		public void run() {
-			capt.notifyDataSetChanged();
-		}
-		
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +40,13 @@ public class L_comments extends Activity {
 		setContentView(R.layout.activity_l_comments);
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
 		token=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
+		json_com=new JSONArray();
+		//获取活动ID
 		Intent ExtraParams=getIntent();
 		actId=ExtraParams.getStringExtra("Aid");
+		
 		listview=(ListView)findViewById(R.id.l_comment_listview);
-		capt=new ComAdapter(this);
+		capt=new ActAdapterX(this);
 		listview.setAdapter(capt);
 
 	}
@@ -59,13 +54,7 @@ public class L_comments extends Activity {
 	protected void onResume() {
 		super.onResume();
 		String RequestURL="/activities/"+actId+"/comments.json?user_token="+token;
-		try {
-			json_com=(JSONArray) new NetWorkX(RequestURL,HTTPMethod.GET,null,DataChanged).execute(JsonType.JArray).get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+		new NetWorkX(RequestURL,HTTPMethod.GET,null,capt).execute();
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,7 +75,7 @@ public class L_comments extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	class ComAdapter extends BaseAdapter {
+	/*class ComAdapter extends BaseAdapter {
 		private Context context;
 		private LayoutInflater layoutInflater; 
 		public CommentClass comments;
@@ -141,5 +130,5 @@ public class L_comments extends Activity {
 			return convertView;
 		}
 		
-	};
+	};*/
 }
