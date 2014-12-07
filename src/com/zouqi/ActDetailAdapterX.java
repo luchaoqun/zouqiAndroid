@@ -5,9 +5,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -163,7 +165,7 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 	    		actIntro.actDescs.setText(ActDetailInfo.GetContent());
 				new LoadImg(actIntro.actImg).execute(ActDetailInfo.GetPictureURL());
 	    		break;
-	    	default:
+	    	case TYPE_5:
 	    		try {
 					CommentInfo = new CommentClass(ActComment.getJSONObject(position));
 				} catch (JSONException e) {
@@ -173,6 +175,9 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 	    		actCom.userId.setText(CommentInfo.GetUserId());
 				actCom.userCom.setText(CommentInfo.GetUserCom());
 				new LoadImg(actCom.userImg).execute(CommentInfo.GetUserLogo());
+	    		break;
+	    	default:
+	    		
 	    	}
 	    	
 			return convertView;

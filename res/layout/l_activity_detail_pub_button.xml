@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/l_activity_detail_pub_button"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/l_pub_comments"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="发表评论" />
+        android:text="发表评论"
+        android:textSize="20dp"
+		android:gravity="center_horizontal"
+		android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

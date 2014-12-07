@@ -36,4 +36,5 @@
     <string name="title_activity_z__org">Z_OrgAct</string>
     <string name="title_activity_w_buildactivityscroll">W_buildactivityscroll</string>
     <string name="title_activity_w__test">W_Test</string>
+    <string name="PublishMenu">发送</string>
 </resources>

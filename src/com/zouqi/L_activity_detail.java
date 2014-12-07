@@ -25,7 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,21 +40,55 @@ public class L_activity_detail extends Activity{
 	 private ActDetailAdapterX dapt;
 	 private String UserToken=null;
 	 
+	 View.OnClickListener ComListLsner=new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent NextIntent=new Intent(L_activity_detail.this,L_comments.class);
+				NextIntent.putExtra("Oid",ActId);
+				startActivity(NextIntent);
+			}
+		};
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_l_detail);
 		SharedPreferences pfe=getSharedPreferences("mytoken",MODE_PRIVATE);
-		UserToken=pfe.getString("token", "sdNr-dpcpsqSczLKMz1r");
+		UserToken=pfe.getString("token", "");
 		
 		Intent ExtraParams=getIntent();
 		ActId=ExtraParams.getStringExtra("Aid");
 		ListView lv_ad=(ListView)findViewById(R.id.L_activity_detail_listview);
 		dapt = new ActDetailAdapterX(this);
 		lv_ad.setAdapter(dapt);
-		   
+
+		lv_ad.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
+		
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				int type = dapt.getItemViewType(position);
+				Intent intent = new Intent();
+				switch(type){
+				case 5:
+					intent.setClass(L_activity_detail.this, L_comments.class);
+					intent.putExtra("Aid", ActId);
+					startActivity(intent);
+					break;
+				case 2:
+					intent.setClass(L_activity_detail.this, L_publish_comment.class);
+					startActivity(intent);
+					break;
+				}		
+				intent.setClass(L_activity_detail.this, L_comments.class);
+				intent.putExtra("Aid", ActId);
+				startActivity(intent);
+			}  
+        });
 			
 	}
+	@Override
 	protected void onResume() {
 		super.onResume();
 		String RequestURL="/activities/"+ActId+".json?user_token="+UserToken;
