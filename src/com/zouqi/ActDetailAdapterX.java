@@ -1,7 +1,5 @@
 package com.zouqi;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,12 +23,8 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 		final int TYPE_2 = 1;
 		final int TYPE_3 = 2;
 		final int TYPE_4 = 3;
-		/*final int TYPE_5 = 4;
-		final int TYPE_6 = 5;
-		final int TYPE_7 = 6;
-		final int TYPE_8 = 7;*/
-		final int TYPE_8=ActComment.length()+5;
-		private ArrayList<Integer> TypeList = new ArrayList<Integer>();
+		final int TYPE_5 = 4;
+		final int TYPE_6 = 5;//ActComment.length()+5;
 		class ActTitle{
 			TextView acTitle;
 			ImageView actLogo;
@@ -50,8 +44,7 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 		}
 		public ActDetailAdapterX(Context context){
               mContext = context;
-              inflater_w = LayoutInflater.from(mContext);
-              
+              inflater_w = LayoutInflater.from(mContext);     
 		}
 		
 			
@@ -60,12 +53,22 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 			return ActComment.length()+5;
 		}
 		@Override
-		public int getItemViewType(int position) {		
-			return position;
+		public int getItemViewType(int position) {
+			if(position==0) 
+				return TYPE_1;
+			else if(position==1)
+				return TYPE_2;
+			else if(position==2)
+				return TYPE_3;
+			else if(position==3)
+				return TYPE_4;
+			else if(position==(ActComment.length()+5))
+				return TYPE_6;
+			else
+				return TYPE_5;
 		}
 
 		@Override
-
 		public int getViewTypeCount() {
          return 6;
 		}
@@ -78,10 +81,10 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 			return position;
 		}
 
-
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			int type=getItemViewType(position);
+			
+			int type=getItemViewType(position);//获取列表类型
 			ActTitle actTitle=null;
 		    ActIntro actIntro=null;
 		    ActCom actCom=null;
@@ -113,24 +116,18 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 	    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment, parent,false);
 
 	    		break;
-	    	/*case TYPE_5:
+	    	case TYPE_5:
 	    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment1, parent,false);
-	    		break;
-	    	case TYPE_6:
-	    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment1, parent,false);
-	    		break;
-	    	case TYPE_7:
-	    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment1, parent,false);
-	    		break;*/
-	    	case TYPE_8:
-	    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment_more,parent,false);
-			    break;
-			default:
-				convertView=inflater_w.inflate(R.layout.l_activity_detail_comment1, parent,false);
 				actCom=new ActCom();
 				actCom.userImg=(ImageView)convertView.findViewById(R.id.l_activity_comment_user);
 	    		actCom.userId=(TextView)convertView.findViewById(R.id.l_activity_comment_id);
 	    		actCom.userCom=(TextView)convertView.findViewById(R.id.l_activity_comment_detail);
+	    		break;
+	    	case TYPE_6:
+	    		convertView=inflater_w.inflate(R.layout.l_activity_detail_comment_more,parent,false);
+			    break;
+			default:
+				
 	    		break;
 	    	}
 	    	
@@ -166,7 +163,7 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 				new LoadImg(actCom.userImg).execute(CommentInfo.GetUserLogo());
 	    	}
 	    	
-			return null;
+			return convertView;
 		}
 
 
