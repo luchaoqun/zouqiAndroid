@@ -18,6 +18,9 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 		private LayoutInflater inflater_w;
 		private JSONObject ActDetail;
 		private JSONArray ActComment;
+		private ActivityClass ActDetailInfo;
+		private CommentClass CommentInfo;
+		private boolean Received=false;
 		
 		final int TYPE_1 = 0;
 		final int TYPE_2 = 1;
@@ -51,8 +54,10 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 		
 			
 		public int getCount() {
-
+			if(this.Received)
 			return ActComment.length()+5;
+			else
+				return 0;
 		}
 		@Override
 		public int getItemViewType(int position) {
@@ -64,7 +69,7 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 				return TYPE_3;
 			else if(position==3)
 				return TYPE_4;
-			else if(position==(ActComment.length()+5))
+			else if(position==(ActComment.length()+4))
 				return TYPE_6;
 			else
 				return TYPE_5;
@@ -133,21 +138,14 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 	    		break;
 	    	}
 	    	
-	    	//载入数据 
-	    	ActivityClass ActDetailInfo = null;
-			try {
-				ActDetailInfo = new ActivityClass(ActDetail.getJSONObject("activity"));
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
-	    	CommentClass CommentInfo=null;
-			try {
-				CommentInfo = new CommentClass(ActComment.getJSONObject(position));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 	    	switch(type){
 	    	case TYPE_1:
+	    		try {
+					ActDetailInfo = new ActivityClass(ActDetail);
+				} catch (JSONException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 	    		actTitle.acTitle.setText(ActDetailInfo.GetTitle());
 				actTitle.beginTime.setText(ActDetailInfo.GetBeginTime());
 				actTitle.endTime.setText(ActDetailInfo.GetEndTime());
@@ -156,10 +154,22 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 				new LoadImg(actTitle.actLogo).execute(ActDetailInfo.GetLogoURL());
 	    		break;
 	    	case TYPE_2:
+	    		try {
+					ActDetailInfo = new ActivityClass(ActDetail);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 	    		actIntro.actDescs.setText(ActDetailInfo.GetContent());
 				new LoadImg(actIntro.actImg).execute(ActDetailInfo.GetPictureURL());
 	    		break;
 	    	default:
+	    		try {
+					CommentInfo = new CommentClass(ActComment.getJSONObject(position));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    		actCom.userId.setText(CommentInfo.GetUserId());
 				actCom.userCom.setText(CommentInfo.GetUserCom());
 				new LoadImg(actCom.userImg).execute(CommentInfo.GetUserLogo());
@@ -172,12 +182,13 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 		@Override
 		public void ChangeForNewResult(String Result) {
 			try {
-				ActDetail=new JSONObject(Result);
-				ActComment=new JSONArray(Result);
+				ActDetail=new JSONObject(Result).getJSONObject("activity");
+				ActComment=ActDetail.getJSONArray("comments");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			this.Received=true;
 			this.notifyDataSetChanged();
 		}
 }

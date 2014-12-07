@@ -22,7 +22,11 @@ public class ActivityClass {
 	
 	ActivityClass(JSONObject NewActivity) throws JSONException{
 		this.Title=NewActivity.getString("activity_title");
-		this.Id=NewActivity.getInt("id");
+		try{
+			this.Id=NewActivity.getInt("id");
+		}catch (JSONException e){
+			this.Id=-1;
+		}
 		this.BeginTime=NewActivity.getString("activity_begin_time");
 		this.EndTime=NewActivity.getString("activity_end_time");
 		this.Logo=NewActivity.getString("activity_logo");
@@ -145,5 +149,9 @@ public class ActivityClass {
 	}
 	public boolean Joined(){
 		return this.GetShipIdSuccess;
+	}
+	
+	public void SetId(Integer NewId){
+		this.Id=NewId;
 	}
 }
