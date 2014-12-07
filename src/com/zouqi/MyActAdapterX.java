@@ -1,6 +1,7 @@
 package com.zouqi;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -84,8 +85,13 @@ public class MyActAdapterX extends AdapterX implements NetWorkInterface{
 	}
 	
 	@Override
-	public void ChangeForNewResult(Object Result) {
-		myAct=(JSONArray)Result;
+	public void ChangeForNewResult(String Result) {
+		try {
+			myAct=new JSONArray(Result);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.notifyDataSetChanged();
 	}
 

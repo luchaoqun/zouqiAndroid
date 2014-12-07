@@ -35,7 +35,11 @@ public class ActivityClass {
 		this.finished=NewActivity.getBoolean("finished");
 		this.Content=NewActivity.getString("activity_content");
 		this.OrganizationName=NewActivity.getString("organization_name");
+		try{
 		this.OrganizationId=NewActivity.getInt("organization_id");
+		}catch (JSONException e){
+			this.OrganizationId=-1;
+		}
 		this.OwnerId=NewActivity.getInt("owner_id");
 		try{
 			this.ShipId=NewActivity.getInt("ship_id");

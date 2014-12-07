@@ -44,7 +44,9 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 		}
 		public ActDetailAdapterX(Context context){
               mContext = context;
-              inflater_w = LayoutInflater.from(mContext);     
+              inflater_w = LayoutInflater.from(mContext);   
+              ActComment=new JSONArray();
+              ActDetail=new JSONObject();
 		}
 		
 			
@@ -168,9 +170,14 @@ public class ActDetailAdapterX extends AdapterX implements NetWorkInterface {
 
 
 		@Override
-		public void ChangeForNewResult(Object Result) {
-			ActDetail=(JSONObject)Result;
-			ActComment=(JSONArray)Result;
+		public void ChangeForNewResult(String Result) {
+			try {
+				ActDetail=new JSONObject(Result);
+				ActComment=new JSONArray(Result);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			this.notifyDataSetChanged();
 		}
 }

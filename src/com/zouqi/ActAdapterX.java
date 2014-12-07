@@ -67,11 +67,11 @@ public class ActAdapterX extends AdapterX implements NetWorkInterface{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if(convertView==null)
 		{
-			convertView = layoutInflater.inflate(R.layout.z_org_cell, null);
+			convertView = layoutInflater.inflate(R.layout.l_tab_listview_item, null);
 			ActIntro=new ActIntroClass();
 			ActIntro.ActLogo=(ImageView)convertView.findViewById(R.id.actlogo);
 			ActIntro.ActNameTXT=(TextView)convertView.findViewById(R.id.actname);
-			ActIntro.ActPlaceTXT=(TextView)convertView.findViewById(R.id.hot_locate);
+			ActIntro.ActPlaceTXT=(TextView)convertView.findViewById(R.id.hot_locate_text);
 			ActIntro.ActTimeTXT=(TextView)convertView.findViewById(R.id.hot_time_text);
 			convertView.setTag(ActIntro);
 			Log.d("ActAdapter","NO convertView,So Creat One");
@@ -90,10 +90,16 @@ public class ActAdapterX extends AdapterX implements NetWorkInterface{
 	}
 	
 	@Override
-	public void ChangeForNewResult(Object Result) {
+	public void ChangeForNewResult(String Result){
 		Log.d("NewResult",Result.toString());
-		ActList=(JSONArray) Result;
+		try {
+			ActList=new JSONArray(Result);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.notifyDataSetChanged();
 	}
+
 	
 }

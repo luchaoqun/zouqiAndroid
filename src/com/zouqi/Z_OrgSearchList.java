@@ -44,7 +44,7 @@ public class Z_OrgSearchList extends Activity {
 						int position, long id) {
 					Intent NextIntent = new Intent(Z_OrgSearchList.this, Z_OrgDetail.class);
 					try {
-						NextIntent.putExtra("Oid", OrgArray.getJSONObject(position).getString("id"));
+						NextIntent.putExtra("Oid", Odpt.getItem(position).getString("id"));
 					} catch (JSONException e) {
 						Log.e("Z_OrgSearch","On OnItemClickListener:"+e);
 						e.printStackTrace();

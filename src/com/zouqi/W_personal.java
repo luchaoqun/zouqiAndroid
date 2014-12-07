@@ -249,9 +249,14 @@ public class W_personal extends Activity {
 				return convertView;
 			}
 			@Override
-			public void ChangeForNewResult(Object Result) {
+			public void ChangeForNewResult(String Result) {
 				 Log.d("regmessage","Result is "+total.toString());
-				 total=(JSONObject)Result;
+				 try {
+					total=new JSONObject(Result);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				 try {
 					registermeg=total.getJSONObject("user").getJSONArray("myactivity");
 				} catch (JSONException e) {

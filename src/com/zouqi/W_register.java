@@ -108,7 +108,7 @@ public class W_register extends Activity implements NetWorkInterface{
 		return super.onOptionsItemSelected(item);
 	}
 	@Override
-	public void ChangeForNewResult(Object Result) {
+	public void ChangeForNewResult(String Result) {
 		Intent a=new Intent();
 		a.setClass(W_register.this,W_login.class);
 		startActivity(a);
@@ -117,9 +117,9 @@ public class W_register extends Activity implements NetWorkInterface{
 	class Imgpostsuccess implements NetWorkInterface{
 
 		@Override
-		public void ChangeForNewResult(Object Result) {
+		public void ChangeForNewResult(String Result) {
 			try {
-				image=(JSONObject) Result;
+				image=new JSONObject(Result);
 				imagecontent = image.getJSONObject("picture").getString("url");
 				Log.e("image",imagecontent );
 			} catch (JSONException e1) {

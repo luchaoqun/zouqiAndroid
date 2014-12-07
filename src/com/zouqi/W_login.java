@@ -57,8 +57,13 @@ public class W_login extends Activity implements NetWorkInterface{
 	}
 	
 	@Override
-	public void ChangeForNewResult(Object Result) {
-		aacc=(JSONObject) Result;
+	public void ChangeForNewResult(String Result) {
+		try {
+			aacc=new JSONObject((String) Result);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(!aacc.has("error")){
 			   savemessage();//封装，用于存储token和userid   函数见下
 			   Intent intent = new Intent();

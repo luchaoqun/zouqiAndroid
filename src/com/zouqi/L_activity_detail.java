@@ -49,7 +49,7 @@ public class L_activity_detail extends Activity{
 		ActId=ExtraParams.getStringExtra("Aid");
 		ListView lv_ad=(ListView)findViewById(R.id.L_activity_detail_listview);
 		dapt = new ActDetailAdapterX(this);
-		   lv_ad.setAdapter(dapt);
+		lv_ad.setAdapter(dapt);
 		   
 			
 	}

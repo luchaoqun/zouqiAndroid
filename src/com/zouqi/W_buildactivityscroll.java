@@ -225,7 +225,7 @@ public  String imagechange(Bitmap photo){    //将图片转换为base64
 		return super.onOptionsItemSelected(item);
 	}
 	@Override
-	public void ChangeForNewResult(Object Result) {
+	public void ChangeForNewResult(String Result) {
 		Intent personal=new Intent();
 		personal.setClass(W_buildactivityscroll.this, W_personal.class);
 		startActivity(personal);
@@ -237,9 +237,14 @@ public  String imagechange(Bitmap photo){    //将图片转换为base64
 			BigPic=isBigpic;
 		}
 		@Override
-		public void ChangeForNewResult(Object Result) {
+		public void ChangeForNewResult(String Result) {
 			if(BigPic){
-				jsondatu=(JSONObject) Result;
+				try {
+					jsondatu=new JSONObject(Result);
+				} catch (JSONException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 				try {
 					bigroad=jsondatu.getJSONObject("picture").getString("url");
 				} catch (JSONException e1) {
@@ -277,7 +282,12 @@ public  String imagechange(Bitmap photo){    //将图片转换为base64
 				}
 			}
 			else{
-				jsonxiaotu=(JSONObject) Result;
+				try {
+					jsonxiaotu=new JSONObject(Result);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				try {
 					smallroad=jsonxiaotu.getJSONObject("picture").getString("url");
 				} catch (JSONException e) {
