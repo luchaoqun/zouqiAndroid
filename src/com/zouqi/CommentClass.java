@@ -15,7 +15,7 @@ public class CommentClass{
 	
 	CommentClass(JSONObject NewComment) throws JSONException {
 		this.UserLogo=NewComment.getString("user_logo");
-		this.UserId=NewComment.getString("ematil");
+		this.UserId=NewComment.getString("email");
 		this.UserCom=NewComment.getString("comment_content");
 		this.ComLen=NewComment.length();
 	}

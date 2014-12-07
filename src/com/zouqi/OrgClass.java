@@ -28,7 +28,7 @@ public class OrgClass {
 		}
 		catch (JSONException e){
 			Log.w("OrgClass","ShipId is null,defualt 0");
-			Shipid=0;
+			Shipid=-1;
 		};
 	}
 	

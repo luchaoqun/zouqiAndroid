@@ -88,9 +88,14 @@ public class OrgAdapterX extends AdapterX {
 		}
 		
 		@Override
-		public void ChangeForNewResult(Object Result) {
-			Log.d("NewResult",Result.toString());
-			OrgList=(JSONArray) Result;
+		public void ChangeForNewResult(String Result){
+			Log.d("NewResult",Result);
+			try {
+				OrgList=new JSONArray(Result);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			this.notifyDataSetChanged();
 		}
 		

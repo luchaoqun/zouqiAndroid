@@ -30,7 +30,7 @@ public class Z_OrgDetail extends Activity implements NetWorkInterface {
 	private Button ZOActionBtn;
 	
 	private OrgClass OrgInfo;
-	private JSONObject RawOrgJData,OrgActionResult;
+	private JSONObject RawOrgJData;
 	private boolean Joined;
 	private ReceiveActionReply BtnClick;
 	
@@ -61,17 +61,24 @@ public class Z_OrgDetail extends Activity implements NetWorkInterface {
 	
 	class  ReceiveActionReply implements NetWorkInterface{
 		@Override
-		public void ChangeForNewResult(Object Result) {
-			Log.d("OrgDetail-ReceiveActionReply","Receive Json:"+OrgActionResult.toString());
+		public void ChangeForNewResult(String Result) {
+			Log.d("OrgDetail-ReceiveActionReply","Receive Json:"+Result);
+			JSONObject Tmp=null;
 			if(Joined){
 				ZOActionBtn.setText("加入");
 				ZOActionBtn.setBackgroundColor(Color.argb(0xff, 0x00, 0x96, 0x88));
 			}
 			else{
+				try {
+					Tmp=new JSONObject(Result);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				ZOActionBtn.setText("离开");
 				ZOActionBtn.setBackgroundColor(Color.argb(0xff, 0xff, 0x00, 0x00));
 				try {
-					OrgInfo.SetShipId(OrgActionResult.getInt("ship_id"));
+					OrgInfo.SetShipId(Tmp.getInt("ship_id"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -95,6 +102,7 @@ public class Z_OrgDetail extends Activity implements NetWorkInterface {
 		ZOActvtBtn.setTextColor(Color.argb(0xff, 0x00, 0x96, 0x88));
 		ZOActionBtn.setOnClickListener(OActionBtnLsner);
 		ZOActvtBtn.setOnClickListener(OActListLsner);
+		BtnClick=new ReceiveActionReply();
 	}
 
 	@Override
@@ -112,7 +120,7 @@ public class Z_OrgDetail extends Activity implements NetWorkInterface {
 		ZOrgContentTxt.setText(OrgInfo.GetContent());
 		ZOrgSchoolTxt.setText(OrgInfo.GetSchoolName());
 		
-		if(OrgInfo.GetShipId_IntType()!=null)
+		if(OrgInfo.GetShipId_IntType()!=-1)
 		{
 			ZOActionBtn.setText("离开");
 			ZOActionBtn.setBackgroundColor(Color.argb(0xff, 0xff, 0x00, 0x00));
@@ -138,8 +146,9 @@ public class Z_OrgDetail extends Activity implements NetWorkInterface {
 
 
 	@Override
-	public void ChangeForNewResult(Object Result) {
+	public void ChangeForNewResult(String Result) {
 		try {
+			this.RawOrgJData=new JSONObject(Result);
 			ChangeView();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

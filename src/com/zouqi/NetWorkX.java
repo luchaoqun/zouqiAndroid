@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class NetWorkX extends AsyncTask<Object, Void, Object>{
+public class NetWorkX extends AsyncTask<Object, Void, String>{
 	
 	public static enum JsonType{
 		JObject,JArray,JString;
@@ -42,7 +42,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	private NetWorkInterface TheComponents;
 	
 	public interface NetWorkInterface{
-		void ChangeForNewResult(Object Result);
+		void ChangeForNewResult(String Result);
 	}
 	
 	public NetWorkX(String RequestPath,HTTPMethod Method,String PostData,NetWorkInterface Components){
@@ -101,7 +101,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	}
 	
 	@Override
-	protected Object doInBackground(Object... params) {
+	protected String doInBackground(Object... params) {
 		try {
 			this.ConnectX();
 		} catch (IOException e) {
@@ -116,7 +116,7 @@ public class NetWorkX extends AsyncTask<Object, Void, Object>{
 	}
 	
 	@Override
-	protected void onPostExecute(Object result){
+	protected void onPostExecute(String result){
 		if(result!=null){
 			Log.d("NetWorkX","Receive Finished");
 			TheComponents.ChangeForNewResult(result);

@@ -1,5 +1,6 @@
 package com.zouqi;
 
+
 import com.zouqi.NetWorkX.NetWorkInterface;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,6 @@ abstract class AdapterX extends BaseAdapter implements NetWorkInterface {
 	
 	abstract public int getCount();
 
-	abstract public void ChangeForNewResult(Object Result);
+	abstract public void ChangeForNewResult(String Result);
 	
 };

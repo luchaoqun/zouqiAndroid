@@ -50,7 +50,7 @@ public class L_tab_hot extends Activity {
                                     int position, long id) {
                 Intent NextIntent = new Intent(L_tab_hot.this, L_activity_detail.class);
                 try {
-                    NextIntent.putExtra("Aid", hotjson.getJSONObject(position).getString("id"));
+                    NextIntent.putExtra("Aid", hapt.getItem(position).getString("id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
