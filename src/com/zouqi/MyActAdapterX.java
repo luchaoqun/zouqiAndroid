@@ -82,7 +82,7 @@ public class MyActAdapterX extends AdapterX implements NetWorkInterface{
 		}
 		return convertView;
 	}
-	
+	 
 	@Override
 	public void ChangeForNewResult(Object Result) {
 		myAct=(JSONArray)Result;
